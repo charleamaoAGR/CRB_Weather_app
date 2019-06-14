@@ -4,6 +4,7 @@ from tqdm import tqdm
 import json
 import csv
 import utm
+import math
 
 def download_grib_request(url, file_name, default_folder='input_data'):
 
@@ -90,3 +91,44 @@ def create_lat_long_csv():
             lat = value_array[0]
             lon = value_array[1]
             writer.writerow([each, lat, lon])
+
+
+def isclose(a, b, rel_tol=0.0625, abs_tol=0.0):
+    return abs(a-b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
+
+
+def init_muni_dict():
+    muni_dict = {}
+    muni_file_name = 'muni_lat_lon.csv'
+    muni_array = []
+
+    with open(get_path_dir('input_data', muni_file_name)) as muni_csv:
+        reader = csv.reader(muni_csv, delimiter=',')
+        for each in reader:
+            if each[0] != 'Municipality':
+                muni_dict[each[0]] = [float(each[1]), float(each[2])]
+                muni_array.append(each[0])
+
+    return muni_dict, muni_array
+
+
+def get_muni_data(filename, default_folder='input_data'):
+    data_list = []
+    with open(get_path_dir(default_folder, filename)) as test_csv:
+        reader = csv.reader(test_csv, delimiter=',')
+        for each in reader:
+            if each[0].strip() != 'X':
+                data_list.append(each)
+
+    return data_list
+
+
+def calc_d_haversine(lat1, lon1, lat2, lon2):
+
+    EARTH_RADIUS = 6371  # KM
+    a = math.sin(math.radians((lat2-lat1)/2))**2 + math.cos(math.radians(lat1)) *\
+        math.cos(math.radians(lat2))*math.sin(math.radians((lon2-lon1)/2))**2
+
+    c = 2*math.atan2(math.sqrt(a), math.sqrt(1-a))
+
+    return EARTH_RADIUS*c

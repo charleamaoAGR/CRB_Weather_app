@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>MAFRD CRB</title>
+    <link rel="stylesheet" href="./css/leaflet.css" />
+    <link rel="stylesheet" href="./css/main.css" />
+    <script src="./js/d3.min.js"></script>
+    <script src="./js/leaflet.js"></script>
+</head>
+
+<body>
+    <script src="./js/jquery-2.1.1.min.js"></script>
+    <script src="./js/moment.min.js"></script>
+    <script src="./js/moment-timezone.min.js"></script>
+    <div id="button-row" style="width:99%">
+      <div id="buttons" style="float:left; width:100%">
+        <button type="button" onclick="buttonZoomTo([[52.6, -101.6],[50.1, -98.2]])">Northwest</button>
+        <button type="button" onclick="buttonZoomTo([[50.2, -101.5],[49, -97.8]])">Southwest</button>
+        <button type="button" onclick="buttonZoomTo([[51.9, -99.7],[50.1, -96.9]])">West/Interlake</button>
+        <button type="button" onclick="buttonZoomTo([[50.8, -99.7],[49, -95.5]])">Red River/Southeast</button>
+        <button type="button" onclick="buttonZoomTo([[50.1, -97.9],[49.6, -96.4]])">Capital Region</button>
+        <button type="button" onclick="buttonZoomTo([[52.6, -101.6],[49, -94.1]])">Reset</button>
+      </div>
+    </div>
+    <div id="map_container">
+      <div id="map1"></div>
+      <div id="map2"></div>
+      <div id="map3"></div>
+      <div id="map4"></div>
+    </div>
+    <div id="sideinfo">
+      <div id="dt">
+        <div id="dtLeft" style="width:10%;float:left;"><button type="submit" style="border:0; background: transparent" onclick="backDT()"><img src="./images/left.png"></button></div>
+        <div id="dtRight" style="width:10%;float:right"><button type="submit" style="border:0; background: transparent" onclick="nextDT()"><img src="./images/right.png"></button></div>
+        <div id="dtVariables" class='menu-ui' style="float:left;width:79%;margin-left:auto;margin-right:auto;"></div>
+      </div>
+      <div id="rmVariables"></div>
+      <div id="infocontainer">
+        <div class="infobox-left"><div class="infobox_title">10 m Wind</div><div id="ws_data"></div><div id="ws_color"></div></div>
+        <div class="infobox-right"><div class="infobox_title">Transport Wind</div><div id="tw_data"></div><div id="tw_color"></div></div>
+        <div class="infobox-left"><div class="infobox_title">Mixing Layer</div><div id="pbl_data"></div><div id="pbl_color"></div></div>
+        <div class="infobox-right"><div class="infobox_title">Ventilation Rate</div><div id="vr_data"></div><div id="vr_color"></div></div>
+      </div>
+      <div id="graph_container"><svg id="graph"></svg></div>
+      <div id="notes"><div style="width:100%">Forecast data is derived from the NAM model, produced by the NCEP.</div><div id="modeldate" style="width:100%;margin-top:5px;"></div></div>
+    </div>
+
+    <script src="./js/L.Map.Sync.js"></script>
+    <script src="./js/RotatedMarker.js"></script>
+    <script src="./data/rms.geojson" type="text/javascript"></script>
+    <script src="https://spotwxaws.s3.amazonaws.com/mafrd/data/wx.json" type="text/javascript"></script>
+    <script src="./data/rm_centroids.geojson" type="text/javascript"></script>
+    <script src="./data/crb_zones_old_simp.geojson" type="text/javascript"></script>
+    <script src="./js/main.js"></script>
+
+</body>
+</html>
