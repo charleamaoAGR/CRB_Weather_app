@@ -5,6 +5,11 @@ import json
 import csv
 import utm
 import math
+import subprocess
+
+THREE_HOUR_SWITCH = 36
+LATEST_HOUR = 84
+
 
 def download_grib_request(url, file_name, default_folder='input_data'):
 
@@ -36,14 +41,15 @@ def get_path_dir(directory, file_name, create=True):
 
 def grib_grab(file_name, date):
 
-    url_test = "https://nomads.ncep.noaa.gov/cgi-bin/filter_nam.pl?file=FILENAME&var_GUST=on&var_" \
-               "HGT=on&var_HPBL=on&var_PRES=on&var_TMP=on&var_VRATE=on&subregion=&leftlon=-101.7&rightlon=-95.1&toplat=" \
+    url_test = "https://nomads.ncep.noaa.gov/cgi-bin/filter_nam.pl?file=FILENAME&var_HGT=on&var_" \
+               "HPBL=on&var_UGRD=on&var_VGRD=on&var_VRATE=on&subregion=&leftlon=-101.7&rightlon=-95.1&toplat=" \
                "52.9&bottomlat=48.9&dir=%2Fnam.YYYYMMDD"
 
     url_test = url_test.replace('FILENAME', file_name)
     url_test = url_test.replace('YYYYMMDD', date)
 
     download_grib_request(url_test, 'grib_test.grib2')
+    subprocess.call(r'C:\Users\CAmao\Documents\CRB_Weather_app\CRB_Weather_app\Project Directory\1_download_data.bat')
 
 
 def get_municipalities():
@@ -132,3 +138,83 @@ def calc_d_haversine(lat1, lon1, lat2, lon2):
     c = 2*math.atan2(math.sqrt(a), math.sqrt(1-a))
 
     return EARTH_RADIUS*c
+
+
+def initialize_data_indices():
+    muni_dict, muni_array = init_muni_dict()
+    muni_indices = {}
+    data_list = get_muni_data('1_HGT_reserved.csv')
+    for each in muni_array:
+        muni_lat = muni_dict[each][0]
+        muni_lon = muni_dict[each][1]
+        total_abs_diff = 6371
+        previous_diff = total_abs_diff
+        index = 0
+        for each_data in data_list:
+            lat = float(each_data[-3])
+            lon = float(each_data[-2])
+            total_abs_diff = calc_d_haversine(muni_lat, muni_lon, lat, lon)
+            if total_abs_diff < previous_diff:
+                muni_indices[each] = index
+                previous_diff = total_abs_diff
+            index += 1
+
+    return muni_indices
+
+
+def get_delta_distance():
+    muni_dict, muni_array = CRB.init_muni_dict()
+    muni_indices = {}
+    results = []
+    data_list = CRB.get_muni_data('1_HGT_reserved.csv')
+    for each in muni_array:
+        muni_lat = muni_dict[each][0]
+        muni_lon = muni_dict[each][1]
+        total_abs_diff = 6371
+        previous_diff = total_abs_diff
+        index = 0
+        data_entry = ""
+        for each_data in data_list:
+            lat = float(each_data[-3])
+            lon = float(each_data[-2])
+            total_abs_diff = CRB.calc_d_haversine(muni_lat, muni_lon, lat, lon)
+            if total_abs_diff < previous_diff:
+                data_entry = 'Muni: %s | Muni_lat: %s | Muni_long: %s | data_lat: %s | data_long  %s | dist: %.2f' % (
+                    each, muni_lat, muni_lon, lat, lon, total_abs_diff)
+                muni_indices[each] = index
+                previous_diff = total_abs_diff
+            index += 1
+        results.append(data_entry)
+
+    for each in results:
+        print each
+
+
+def update_json_data(date, hour_hh):
+    iterables = get_iterable_hours()
+    file_name = 'nam.tHOUR_HHz.awphysXX.tm00.grib2'.replace('HOUR_HH', hour_hh)
+    file_name_new = file_name.replace('XX', str(iterables[0]).zfill(2))
+    progress_size = len(iterables)
+
+    for hour_iter in tqdm(iterables, total=progress_size, desc="Parsing %s" % file_name_new):
+        file_name_new = file_name.replace('XX', str(hour_iter).zfill(2))
+        grib_grab(file_name_new, date)
+        # build nested dictionary.
+        # build json file.
+        # overwrite old json file.
+
+
+def get_iterable_hours():
+    hour = 0
+    iterables = []
+    while hour <= LATEST_HOUR:
+        iterables.append(hour)
+        if hour < THREE_HOUR_SWITCH:
+            hour += 1
+        else:
+            hour += 3
+    return iterables
+
+
+def build_variable(file_name, default_folder='input_data'):
+    return ""
