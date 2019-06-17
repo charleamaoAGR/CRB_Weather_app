@@ -49,7 +49,7 @@ def grib_grab(file_name, date):
     url_test = url_test.replace('YYYYMMDD', date)
 
     download_grib_request(url_test, 'grib_test.grib2')
-    subprocess.call(r'C:\Users\CAmao\Documents\CRB_Weather_app\CRB_Weather_app\Project Directory\1_download_data.bat')
+    subprocess.call(r'C:\Users\Administrator\Documents\Python_Scripts\CRB_Weather_app\CRB_Weather_app\Project Directory\1_download_data.bat')
 
 
 def get_municipalities():
