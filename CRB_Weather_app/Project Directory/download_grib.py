@@ -5,9 +5,10 @@ from packages import CRB_Functions as CRB
 # CRB.create_lat_long_csv()
 def main():
     # CRB.grib_grab('nam.t06z.awphys00.tm00.grib2', '20190617')
-    index_dict = CRB.initialize_data_indices()
+    # index_dict = CRB.initialize_data_indices()
 
-    CRB.update_json_data('20190610', '00')
+    # CRB.update_json_data('20190610', '00')
+    grouped_array = CRB.CRB_test_function()
 
     # Check the time.
 

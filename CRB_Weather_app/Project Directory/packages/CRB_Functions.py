@@ -6,9 +6,27 @@ import csv
 import utm
 import math
 import subprocess
+import yagmail
+from CRB_Classes import GroupedArray
 
 THREE_HOUR_SWITCH = 36
 LATEST_HOUR = 84
+EARTH_RADIUS = 6371  # KM
+HGT = '1_HGT_reserved.csv'
+UGRD_PBL = '2_UGRD_pbl.csv'
+VGRD_PBL = '3_VGRD_pbl.csv'
+VRATE = '4_VRATE.csv'
+UGRD_SURFACE = '5_UGRD.csv'
+VGRD_SURFACE = '6_VGRD.csv'
+FILENAME_ARRAY = [UGRD_SURFACE, VGRD_SURFACE, UGRD_PBL, VGRD_PBL, HGT, VRATE]
+MINIMUM_FILE_SIZE = 5000  # bytes
+ERROR_NAM_MESSAGE = """
+Hello,
+
+There is something wrong with the grib data from NOAA. Please check the grib file located in %s
+
+THIS EMAIL IS UNMONITORED. DO NOT REPLY TO THIS EMAIL.
+"""
 
 
 def download_grib_request(url, file_name, default_folder='input_data'):
@@ -47,9 +65,15 @@ def grib_grab(file_name, date):
 
     url_test = url_test.replace('FILENAME', file_name)
     url_test = url_test.replace('YYYYMMDD', date)
-
     download_grib_request(url_test, 'grib_test.grib2')
-    subprocess.call(r'C:\Users\Administrator\Documents\Python_Scripts\CRB_Weather_app\CRB_Weather_app\Project Directory\1_download_data.bat')
+
+    if os.path.getsize(get_path_dir('input_data', 'grib_test.grib2')) < MINIMUM_FILE_SIZE:
+        send_error_email(ERROR_NAM_MESSAGE % get_path_dir('input_data', 'grib_test.grib2'))
+    else:
+        subprocess.call(r'C:\Users\Administrator\Documents\Python_Scripts\CRB_Weather_app'
+                        r'\CRB_Weather_app\Project Directory\1_download_data.bat')
+
+
 
 
 def get_municipalities():
@@ -123,7 +147,7 @@ def get_muni_data(filename, default_folder='input_data'):
     with open(get_path_dir(default_folder, filename)) as test_csv:
         reader = csv.reader(test_csv, delimiter=',')
         for each in reader:
-            if each[0].strip() != 'X':
+            if each[0].strip() != 'X':  # Without headers!!
                 data_list.append(each)
 
     return data_list
@@ -131,7 +155,6 @@ def get_muni_data(filename, default_folder='input_data'):
 
 def calc_d_haversine(lat1, lon1, lat2, lon2):
 
-    EARTH_RADIUS = 6371  # KM
     a = math.sin(math.radians((lat2-lat1)/2))**2 + math.cos(math.radians(lat1)) *\
         math.cos(math.radians(lat2))*math.sin(math.radians((lon2-lon1)/2))**2
 
@@ -147,7 +170,7 @@ def initialize_data_indices():
     for each in muni_array:
         muni_lat = muni_dict[each][0]
         muni_lon = muni_dict[each][1]
-        total_abs_diff = 6371
+        total_abs_diff = EARTH_RADIUS
         previous_diff = total_abs_diff
         index = 0
         for each_data in data_list:
@@ -170,7 +193,7 @@ def get_delta_distance():
     for each in muni_array:
         muni_lat = muni_dict[each][0]
         muni_lon = muni_dict[each][1]
-        total_abs_diff = 6371
+        total_abs_diff = EARTH_RADIUS
         previous_diff = total_abs_diff
         index = 0
         data_entry = ""
@@ -195,6 +218,7 @@ def update_json_data(date, hour_hh):
     file_name = 'nam.tHOUR_HHz.awphysXX.tm00.grib2'.replace('HOUR_HH', hour_hh)
     file_name_new = file_name.replace('XX', str(iterables[0]).zfill(2))
     progress_size = len(iterables)
+    muni_data_bank = GroupedArray(muni_indices.keys())
 
     for hour_iter in tqdm(iterables, total=progress_size, desc="Parsing %s" % file_name_new):
         file_name_new = file_name.replace('XX', str(hour_iter).zfill(2))
@@ -216,5 +240,35 @@ def get_iterable_hours():
     return iterables
 
 
-def build_variable(file_name, default_folder='input_data'):
-    return ""
+def fill_with_data(muni_indices, grouped_array):
+    data_entry = GroupedArray(muni_indices, True)
+    for each_file in FILENAME_ARRAY:
+        data_contents = get_muni_data(each_file, 'input_data')
+        for each_muni in muni_indices.keys():
+            data_entry.insert_data(each_muni, data_contents[muni_indices[each_muni]][4])
+    for each_muni in muni_indices.keys():
+        grouped_array.insert_data(each_muni, data_entry.get_data(each_muni))
+
+
+def CRB_test_function():
+    """
+    muni_indices = initialize_data_indices()
+    muni_data_bank = GroupedArray(muni_indices.keys())
+    fill_with_data(muni_indices, muni_data_bank)
+    """
+    muni_data_bank = []
+    send_error_email(ERROR_NAM_MESSAGE % get_path_dir('input_data', 'grib_test.grib2'), receiver="Charle.Amao@gov.mb.ca")
+    return muni_data_bank
+
+
+def get_wx_valid_date(time_stamp):
+    return time_stamp
+
+
+def send_error_email(error_message, user="DevCharle.mbag", password="mawp209MAWP@)(", receiver="Timi.Ojo@gov.mb.ca"):
+    yag = yagmail.SMTP(user=user, password=password)
+    yag.send(
+        to=receiver,
+        subject="Error message from DevCharle",
+        contents=error_message
+    )
