@@ -2,6 +2,7 @@ class GroupedArray:
 
     def __init__(self, identifiers, is_scalar=False):
         self.data_dict = {}
+        self.identifiers = identifiers
 
         for each_identifier in identifiers:
             self.data_dict[each_identifier] = []
@@ -12,6 +13,7 @@ class GroupedArray:
     def add_identifier(self, identifier):
 
         if identifier not in self.data_dict.keys():
+            self.identifiers.append(identifier)
             self.data_dict[identifier] = []
 
     def insert_data(self, identifier, data):
@@ -28,4 +30,7 @@ class GroupedArray:
 
     def get_data(self, identifier):
         return self.data_dict[identifier]
+
+    def get_identifiers(self):
+        return self.identifiers
 
