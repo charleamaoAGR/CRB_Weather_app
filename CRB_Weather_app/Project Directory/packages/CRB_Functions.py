@@ -14,20 +14,20 @@ from datetime import date
 THREE_HOUR_SWITCH = 36
 LATEST_HOUR = 84
 EARTH_RADIUS = 6371  # KM
-HGT = '1_HGT_reserved.csv'
+HPBL = '1_HPBL_reserved.csv'
 UGRD_PBL = '2_UGRD_pbl.csv'
 VGRD_PBL = '3_VGRD_pbl.csv'
 VRATE = '4_VRATE.csv'
 UGRD_SURFACE = '5_UGRD.csv'
 VGRD_SURFACE = '6_VGRD.csv'
-FILENAME_ARRAY = [UGRD_SURFACE, VGRD_SURFACE, UGRD_PBL, VGRD_PBL, HGT, VRATE]
+FILENAME_ARRAY = [UGRD_SURFACE, VGRD_SURFACE, UGRD_PBL, VGRD_PBL, HPBL, VRATE]
 
-UGRD_SURFACE_INDEX = 1
-VGRD_SURFACE_INDEX = 2
-UGRD_PBL_INDEX = 3
-VGRD_PBL_INDEX = 4
-HGT_INDEX = 5
-VRATE_INDEX = 6
+UGRD_SURFACE_INDEX = 0
+VGRD_SURFACE_INDEX = 1
+UGRD_PBL_INDEX = 2
+VGRD_PBL_INDEX = 3
+HPBL_INDEX = 4
+VRATE_INDEX = 5
 MINIMUM_FILE_SIZE = 5000  # bytes
 ERROR_NAM_MESSAGE = """
 Hello,
@@ -48,7 +48,7 @@ def calc_d_haversine(lat1, lon1, lat2, lon2):
     return EARTH_RADIUS*c
 
 
-def get_delta_distance(file_name='1_HGT_reserved.csv'):
+def get_delta_distance(file_name='1_HPBL_reserved.csv'):
     muni_dict, muni_array =init_muni_dict()
     muni_indices = {}
     results = []
@@ -154,7 +154,7 @@ def get_path_dir(directory, file_name, create=True, is_home_dir=False):
 
 def grib_grab(file_name, date, in_prod_server=True):
 
-    url_test = "https://nomads.ncep.noaa.gov/cgi-bin/filter_nam.pl?file=FILENAME&var_HGT=on&var_" \
+    url_test = "https://nomads.ncep.noaa.gov/cgi-bin/filter_nam.pl?file=FILENAME&var_HPBL=on&var_" \
                "HPBL=on&var_UGRD=on&var_VGRD=on&var_VRATE=on&subregion=&leftlon=-101.7&rightlon=-95.1&toplat=" \
                "52.9&bottomlat=48.9&dir=%2Fnam.YYYYMMDD"
 
@@ -163,7 +163,6 @@ def grib_grab(file_name, date, in_prod_server=True):
     download_grib_request(url_test, 'grib_test.grib2')
     dev_bat_path = get_path_dir("", '1_download_data_dev.bat', is_home_dir=True)
 
-    """
     if os.path.getsize(get_path_dir('input_data', 'grib_test.grib2')) < MINIMUM_FILE_SIZE:
         send_error_email(ERROR_NAM_MESSAGE % get_path_dir('input_data', 'grib_test.grib2'))
     else:
@@ -172,7 +171,6 @@ def grib_grab(file_name, date, in_prod_server=True):
                     Project Directory\1_download_data.bat')
         else:
             subprocess.call(r'%s' % dev_bat_path)
-    """
 
 
 def init_muni_dict():
@@ -201,7 +199,7 @@ def get_muni_data(filename, default_folder='input_data'):
     return data_list
 
 
-def initialize_data_indices(file_name='1_HGT_reserved.csv'):
+def initialize_data_indices(file_name='1_HPBL_reserved.csv'):
     muni_dict, muni_array = init_muni_dict()
     muni_indices = {}
     data_list = get_muni_data(file_name)
@@ -240,23 +238,26 @@ def build_input_data(date, hour_hh, muni_indices):
 
 def write_json_data(muni_data_bank, output_filename='wx.json'):
     list_of_muni = muni_data_bank.get_identifiers()
+    list_of_muni.sort()
     hours_iterables = get_iterable_hours()
     json_output_str = "wxdata = ["
     for each_muni in list_of_muni:
         muni_data = muni_data_bank.get_data(each_muni)
-        for each_index in range(len(muni_data)):
+        data_size = len(muni_data)
+        for each_index in range(data_size):
             each_muni_data = muni_data[each_index]
-            ugrd_s = each_muni_data[UGRD_SURFACE_INDEX]
-            vgrd_s = each_muni_data[VGRD_SURFACE_INDEX]
-            ugrd_pbl = each_muni_data[UGRD_PBL_INDEX]
-            vgrd_pbl = each_muni_data[VGRD_PBL_INDEX]
-            hgt_pbl = each_muni_data[HGT_INDEX]
-            vrate = each_muni_data[VRATE_INDEX]
+            ugrd_s = float(each_muni_data[UGRD_SURFACE_INDEX])*3.6
+            vgrd_s = float(each_muni_data[VGRD_SURFACE_INDEX])*3.6
+            ugrd_pbl = float(each_muni_data[UGRD_PBL_INDEX])*3.6
+            vgrd_pbl = float(each_muni_data[VGRD_PBL_INDEX])*3.6
+            HPBL_pbl = float(each_muni_data[HPBL_INDEX])
+            vrate = int(float(each_muni_data[VRATE_INDEX]))
             hour_offset = hours_iterables[each_index]
-            json_output_str += create_json_muni_obj(each_muni, hour_offset, ugrd_s, vgrd_s, ugrd_pbl, vgrd_pbl, hgt_pbl,
+            json_output_str += create_json_muni_obj(each_muni, hour_offset, ugrd_s, vgrd_s, ugrd_pbl, vgrd_pbl, HPBL_pbl,
                                                     vrate)
-        if each_muni != list_of_muni[-1]:
-            json_output_str += ','
+            if each_muni != list_of_muni[-1] or each_index != data_size - 1:
+                json_output_str += ','
+
     json_output_str += "];"
     output_file = open(output_filename, 'w+')
     output_file.write(json_output_str)
@@ -265,17 +266,17 @@ def write_json_data(muni_data_bank, output_filename='wx.json'):
     return json_output_str
 
 
-def create_json_muni_obj(muni_name, hour_offset, ugrd_s, vgrd_s, ugrd_pbl, vgrd_pbl, hgt_pbl, vrate):
+def create_json_muni_obj(muni_name, hour_offset, ugrd_s, vgrd_s, ugrd_pbl, vgrd_pbl, HPBL_pbl, vrate):
     name_str = "\"muni_name\":\"%s\"" % muni_name
     valid_date = "\"valid_date\":%s" % (get_wx_valid_date(date.today().strftime("%Y%m%d"), hour_offset))
     ws_surface = "\"ws\":%i" % int(calc_ws(ugrd_s, vgrd_s))
     wd_surface = "\"wd\":%i" % int(calc_wd(ugrd_s, vgrd_s))
-    ws_pbl = "\"ws\":%i" % int(calc_ws(ugrd_pbl, vgrd_pbl))
-    wd_pbl = "\"wd\":%i" % int(calc_wd(ugrd_pbl, vgrd_pbl))
-    hgt = "\"hgt_pbl\":%i" % int(hgt_pbl)
+    ws_pbl = "\"ws_pbl\":%i" % int(calc_ws(ugrd_pbl, vgrd_pbl))
+    wd_pbl = "\"wd_pbl\":%i" % int(calc_wd(ugrd_pbl, vgrd_pbl))
+    HPBL = "\"hgt_pbl\":%i" % int(HPBL_pbl)
     vrate_s = "\"vrate\":%i" % int(vrate)
 
-    return "{%s,%s,%s,%s,%s,%s,%s,%s}" % (name_str, valid_date, ws_surface, wd_surface, ws_pbl, wd_pbl, hgt, vrate_s)
+    return "{%s,%s,%s,%s,%s,%s,%s,%s}" % (name_str, valid_date, ws_surface, wd_surface, ws_pbl, wd_pbl, HPBL, vrate_s)
 
 
 def get_iterable_hours():
@@ -302,8 +303,8 @@ def fill_with_data(muni_indices, grouped_array):
 
 def CRB_test_function():
     muni_indices = initialize_data_indices()
-    date = '20190617'
-    hour_hh = '00'
+    date = '20190624'
+    hour_hh = '06'
     iterables = get_iterable_hours()
     file_name = 'nam.tHOUR_HHz.awphysXX.tm00.grib2'.replace('HOUR_HH', hour_hh)
     file_name_new = file_name.replace('XX', str(iterables[0]).zfill(2))
@@ -313,9 +314,9 @@ def CRB_test_function():
     for hour_iter in tqdm(iterables, total=progress_size, desc="Parsing %s" % file_name_new):
         file_name_new = file_name.replace('XX', str(hour_iter).zfill(2))
         grib_grab(file_name_new, date, False)
-        # fill_with_data(muni_indices, muni_data_bank)
+        fill_with_data(muni_indices, muni_data_bank)
 
-    # output_str = write_json_data(muni_data_bank, 'output_test.txt')
+    output_str = write_json_data(muni_data_bank, 'output_test.txt')
     return muni_data_bank
 
 
@@ -332,11 +333,7 @@ def get_epoch_time(date_str, offset=0):
 
 def send_error_email(error_message, user="DevCharle.mbag", password="mawp209MAWP@)(", receiver="Timi.Ojo@gov.mb.ca"):
     yag = yagmail.SMTP(user=user, password=password)
-    yag.send(
-        to=receiver,
-        subject="Error message from DevCharle",
-        contents=error_message
-    )
+    yag.send(to=receiver, subject="Error message from DevCharle", contents=error_message)
 
 
 def calc_ws(windspeed_u, windspeed_v):
