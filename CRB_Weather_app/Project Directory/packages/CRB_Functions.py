@@ -168,7 +168,7 @@ def grib_grab(file_name, date, in_prod_server=True):
     else:
         if in_prod_server:
             subprocess.call(r'C:\Users\Administrator\Documents\Python_Scripts\CRB_Weather_app\CRB_Weather_app\
-                    Project Directory\1_download_data.bat')
+                    Project" "Directory\1_download_data.bat')
         else:
             subprocess.call(r'%s' % dev_bat_path)
 
