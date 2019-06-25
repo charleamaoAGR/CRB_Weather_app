@@ -233,7 +233,9 @@ def build_input_data(date, hour_hh, muni_indices):
         grib_grab(file_name_new, date)
         fill_with_data(muni_indices, muni_data_bank)
 
-    return muni_data_bank
+    output_str = write_json_data(muni_data_bank)
+
+    return output_str
 
 
 def write_json_data(muni_data_bank, output_filename='wx.json'):
