@@ -16,7 +16,7 @@ def main():
         CRB.build_input_data(today_str, '06', muni_indices)
     elif time_6 <= time < time_12:
         CRB.build_input_data(today_str, '12', muni_indices)
-    elif time_12 <= time <time_18:
+    elif time_12 <= time < time_18:
         CRB.build_input_data(today_str, '18', muni_indices)
     elif time >= time_18:
         time_plus_1 = (time + timedelta(days=1)).strftime('%Y%m%d')
