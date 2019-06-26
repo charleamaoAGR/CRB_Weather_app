@@ -178,7 +178,7 @@ def grib_grab(file_name, date, in_prod_server=True):
         send_error_email(ERROR_NAM_MESSAGE_1 % get_path_dir('input_data', 'grib_test.grib2'))
     else:
         if in_prod_server:
-            subprocess.call(r'C:\Users\Administrator\Documents\Python_Scripts\CRB_Weather_app\CRB_Weather_app\Project Directory\1_download_data.bat')
+            subprocess.call(r'C:\Users\Administrator\Documents\Python_Scripts\CRB_Weather_app\CRB_Weather_app\Project_Directory\1_download_data.bat')
         else:
             subprocess.call(r'%s' % dev_bat_path)
 
