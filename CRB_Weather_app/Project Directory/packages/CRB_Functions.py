@@ -29,13 +29,24 @@ VGRD_PBL_INDEX = 3
 HPBL_INDEX = 4
 VRATE_INDEX = 5
 MINIMUM_FILE_SIZE = 5000  # bytes
-ERROR_NAM_MESSAGE = """
+
+ERROR_NAM_MESSAGE_1 = """
 Hello,
 
 There is something wrong with the grib data from NOAA. Please check the grib file located in %s
 
 THIS EMAIL IS UNMONITORED. DO NOT REPLY TO THIS EMAIL.
 """
+
+ERROR_NAM_MESSAGE_2 = """
+Hello,
+
+The data from NOAA is currently incomplete for the hour %s, trying again in 1 hour.
+
+THIS EMAIL IS UNMONITORED. DO NOT REPLY TO THIS EMAIL.
+"""
+
+NAM_FILE = 'nam.tHOUR_HHz.awphysXX.tm00.grib2'
 
 
 def calc_d_haversine(lat1, lon1, lat2, lon2):
@@ -164,11 +175,10 @@ def grib_grab(file_name, date, in_prod_server=True):
     dev_bat_path = get_path_dir("", '1_download_data_dev.bat', is_home_dir=True)
 
     if os.path.getsize(get_path_dir('input_data', 'grib_test.grib2')) < MINIMUM_FILE_SIZE:
-        send_error_email(ERROR_NAM_MESSAGE % get_path_dir('input_data', 'grib_test.grib2'))
+        send_error_email(ERROR_NAM_MESSAGE_1 % get_path_dir('input_data', 'grib_test.grib2'))
     else:
         if in_prod_server:
             subprocess.call(r'C:\Users\Administrator\Documents\Python_Scripts\CRB_Weather_app\CRB_Weather_app\Project Directory\1_download_data.bat')
-               
         else:
             subprocess.call(r'%s' % dev_bat_path)
 
@@ -222,8 +232,9 @@ def initialize_data_indices(file_name='1_HPBL_reserved.csv'):
 
 
 def build_input_data(date, hour_hh, muni_indices):
+    data_finished(hour_hh, date)
     iterables = get_iterable_hours()
-    file_name = 'nam.tHOUR_HHz.awphysXX.tm00.grib2'.replace('HOUR_HH', hour_hh)
+    file_name = NAM_FILE.replace('HOUR_HH', hour_hh)
     file_name_new = file_name.replace('XX', str(iterables[0]).zfill(2))
     progress_size = len(iterables)
     muni_data_bank = GroupedArray(muni_indices.keys())
@@ -308,7 +319,7 @@ def CRB_test_function():
     date = '20190624'
     hour_hh = '06'
     iterables = get_iterable_hours()
-    file_name = 'nam.tHOUR_HHz.awphysXX.tm00.grib2'.replace('HOUR_HH', hour_hh)
+    file_name = NAM_FILE.replace('HOUR_HH', hour_hh)
     file_name_new = file_name.replace('XX', str(iterables[0]).zfill(2))
     progress_size = len(iterables)
     muni_data_bank = GroupedArray(muni_indices.keys())
@@ -351,3 +362,26 @@ def calc_wd(windspeed_u, windspeed_v):
     elif -90 < base_angle < 0:
         wd = 270 - base_angle
     return wd
+
+
+def data_finished(hour, today_date):
+    url_test = "https://nomads.ncep.noaa.gov/cgi-bin/filter_nam.pl?file=FILENAME&var_HPBL=on&var_" \
+               "HPBL=on&var_UGRD=on&var_VGRD=on&var_VRATE=on&subregion=&leftlon=-101.7&rightlon=-95.1&toplat=" \
+               "52.9&bottomlat=48.9&dir=%2Fnam.YYYYMMDD"
+
+    url_test = url_test.replace('FILENAME', NAM_FILE.replace('HOUR_HH', hour).replace('XX', '84'))
+    url_test = url_test.replace('YYYYMMDD', today_date)
+    download_grib_request(url_test, 'grib_test.grib2')
+
+    raise_exception(ERROR_NAM_MESSAGE_2 % hour, os.path.getsize(get_path_dir('input_data', 'grib_test.grib2'))
+                    < MINIMUM_FILE_SIZE)
+
+
+def raise_exception(error_message, condition, send_email=True):
+
+    if condition:
+        if send_email:
+            send_error_email(error_message)
+        raise Exception(error_message)
+    else:
+        pass
