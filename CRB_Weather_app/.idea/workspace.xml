@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9d4b9d26-4cb6-4669-926c-00b70406fcf4" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="9d4b9d26-4cb6-4669-926c-00b70406fcf4" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,7 +64,7 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Project Directory/packages/CRB_Functions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4488">
+            <state relative-caret-position="3">
               <caret line="349" lean-forward="true" selection-start-line="349" selection-end-line="349" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
@@ -226,7 +224,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1296" height="1040" extended-state="6" />
+    <frame x="-8" y="-8" width="1296" height="1040" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.26132685" />
@@ -288,7 +286,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Project Directory/packages/CRB_Functions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4488">
+        <state relative-caret-position="3">
           <caret line="349" lean-forward="true" selection-start-line="349" selection-end-line="349" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
