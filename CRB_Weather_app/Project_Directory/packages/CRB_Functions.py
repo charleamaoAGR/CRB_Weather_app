@@ -335,7 +335,7 @@ def create_json_muni_obj(muni_name, hour_offset, ugrd_s, vgrd_s, ugrd_pbl, vgrd_
     return "{%s,%s,%s,%s,%s,%s,%s,%s}" % (name_str, valid_date, ws_surface, wd_surface, ws_pbl, wd_pbl, HPBL, vrate_s)
 
 
-def get_iterable_hours(hour_hh):
+def get_iterable_hours(hour_hh): 
     hour_hh_int = int(hour_hh)
     hour = hour_hh_int
     iterables = []
@@ -364,7 +364,7 @@ def CRB_test_function():
 
 def get_wx_valid_date(date_str, int_hour):
     # Change offset for daylight savings time?
-    epoch_ms = (get_epoch_time(date_str, offset=1) + int_hour*SECONDS_IN_HOUR) * MILLISECONDS_IN_SECONDS
+    epoch_ms = (get_epoch_time(date_str, offset=1) + (int_hour - 6)*SECONDS_IN_HOUR) * MILLISECONDS_IN_SECONDS
     return epoch_ms  # Returns epoch in ms.
 
 
