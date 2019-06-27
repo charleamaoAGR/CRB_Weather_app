@@ -369,7 +369,7 @@ def CRB_test_function():
 
 
 def get_wx_valid_date(date, int_hour):
-    epoch_ms = (get_epoch_time(date) + int_hour*3600) * 1000
+    epoch_ms = (get_epoch_time(date, offset=1) + int_hour*3600) * 1000  # Change offset for daylight savings time?
     return epoch_ms  # Returns epoch in ms.
 
 
