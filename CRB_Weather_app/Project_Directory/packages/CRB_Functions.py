@@ -29,6 +29,9 @@ VGRD_PBL_INDEX = 3
 HPBL_INDEX = 4
 VRATE_INDEX = 5
 MINIMUM_FILE_SIZE = 5000  # bytes
+KPH_CONVERSION_FACTOR = 3.6
+SECONDS_IN_HOUR = 3600
+MILLISECONDS_IN_SECONDS = 1000
 
 ERROR_NAM_MESSAGE_1 = """
 Hello,
@@ -211,10 +214,14 @@ def grib_grab(file_name, date, in_prod_server=True):
     download_grib_request(url_test, 'grib_test.grib2')
     dev_bat_path = get_path_dir("", generate_bat_file(), is_home_dir=True)
 
+    success = True
+
     if os.path.getsize(get_path_dir('input_data', 'grib_test.grib2')) < MINIMUM_FILE_SIZE:
-        send_error_email(ERROR_NAM_MESSAGE_1 % get_path_dir('input_data', 'grib_test.grib2'))
+        success = False
     else:
         subprocess.call(r'%s' % dev_bat_path)
+
+    return success
 
 
 def init_muni_dict():
@@ -266,7 +273,7 @@ def initialize_data_indices(file_name='1_HPBL_reserved.csv'):
 
 
 def build_input_data(date, hour_hh, muni_indices):
-    data_finished(hour_hh, date)
+    data_finished(hour_hh.strip(), date.strip())
     iterables = get_iterable_hours('00')
     file_name = NAM_FILE.replace('HOUR_HH', hour_hh)
     file_name_new = file_name.replace('XX', str(iterables[0]).zfill(2))
@@ -275,7 +282,9 @@ def build_input_data(date, hour_hh, muni_indices):
 
     for hour_iter in tqdm(iterables, total=progress_size, desc="Parsing %s" % file_name_new):
         file_name_new = file_name.replace('XX', str(hour_iter).zfill(2))
-        grib_grab(file_name_new, date, False)
+        if not grib_grab(file_name_new, date, False):
+            send_error_email(ERROR_NAM_MESSAGE_1 % get_path_dir('input_data', 'grib_test.grib2'))
+            raise Exception('grib_grab shouldn\'t fail if data_finished method succeeds. Check data for %s' % hour_iter)
         fill_with_data(muni_indices, muni_data_bank)
 
     output_str = write_json_data(muni_data_bank, hour_hh)
@@ -293,10 +302,10 @@ def write_json_data(muni_data_bank, hour_hh, output_filename='wx.json'):
         data_size = len(muni_data)
         for each_index in range(data_size):
             each_muni_data = muni_data[each_index]
-            ugrd_s = float(each_muni_data[UGRD_SURFACE_INDEX])*3.6
-            vgrd_s = float(each_muni_data[VGRD_SURFACE_INDEX])*3.6
-            ugrd_pbl = float(each_muni_data[UGRD_PBL_INDEX])*3.6
-            vgrd_pbl = float(each_muni_data[VGRD_PBL_INDEX])*3.6
+            ugrd_s = float(each_muni_data[UGRD_SURFACE_INDEX])*KPH_CONVERSION_FACTOR
+            vgrd_s = float(each_muni_data[VGRD_SURFACE_INDEX])*KPH_CONVERSION_FACTOR
+            ugrd_pbl = float(each_muni_data[UGRD_PBL_INDEX])*KPH_CONVERSION_FACTOR
+            vgrd_pbl = float(each_muni_data[VGRD_PBL_INDEX])*KPH_CONVERSION_FACTOR
             HPBL_pbl = float(each_muni_data[HPBL_INDEX])
             vrate = int(float(each_muni_data[VRATE_INDEX]))
             hour_offset = hours_iterables[each_index]
@@ -350,32 +359,18 @@ def fill_with_data(muni_indices, grouped_array):
 
 
 def CRB_test_function():
-    muni_indices = initialize_data_indices()
-    date = '20190624'
-    hour_hh = '06'
-    iterables = get_iterable_hours()
-    file_name = NAM_FILE.replace('HOUR_HH', hour_hh)
-    file_name_new = file_name.replace('XX', str(iterables[0]).zfill(2))
-    progress_size = len(iterables)
-    muni_data_bank = GroupedArray(muni_indices.keys())
-
-    for hour_iter in tqdm(iterables, total=progress_size, desc="Parsing %s" % file_name_new):
-        file_name_new = file_name.replace('XX', str(hour_iter).zfill(2))
-        grib_grab(file_name_new, date, False)
-        fill_with_data(muni_indices, muni_data_bank)
-
-    output_str = write_json_data(muni_data_bank, 'output_test.txt')
-    return muni_data_bank
+    pass
 
 
-def get_wx_valid_date(date, int_hour):
-    epoch_ms = (get_epoch_time(date) + int_hour*3600) * 1000
+def get_wx_valid_date(date_str, int_hour):
+    # Change offset for daylight savings time?
+    epoch_ms = (get_epoch_time(date_str, offset=1) + int_hour*SECONDS_IN_HOUR) * MILLISECONDS_IN_SECONDS
     return epoch_ms  # Returns epoch in ms.
 
 
 def get_epoch_time(date_str, offset=0):
     pattern = "%Y%m%d"
-    epoch = (int(time.mktime(time.strptime(date_str, pattern))) + offset*3600)  # In seconds.
+    epoch = (int(time.mktime(time.strptime(date_str, pattern))) + offset*SECONDS_IN_HOUR)  # In seconds.
     return epoch
 
 
