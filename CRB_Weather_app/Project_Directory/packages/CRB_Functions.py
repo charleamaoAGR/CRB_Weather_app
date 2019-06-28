@@ -280,10 +280,10 @@ def initialize_data_indices(file_name='1_HPBL_reserved.csv'):
         muni_lat = muni_dict[each][0]
         muni_lon = muni_dict[each][1]
         shape_area = muni_dict[each][2]
-        total_abs_diff = EARTH_RADIUS
-        previous_diff = total_abs_diff
+        previous_abs_diff = EARTH_RADIUS  # some random huge number.
+        index_list = []
+        closest_index = 0
         index = 0
-        number_of_valid_points = 0
         for each_data in data_list:
             lat = float(each_data[-3])
             lon = float(each_data[-2])
@@ -293,9 +293,16 @@ def initialize_data_indices(file_name='1_HPBL_reserved.csv'):
 
             # Always point to lat/lon that's closest to the municipality's centroid.
             if total_abs_diff <= calc_circle_radius(shape_area) / M_IN_KM:
-                muni_indices[each] = index
-                previous_diff = total_abs_diff
+                index_list.append(index)
+                if total_abs_diff <= previous_abs_diff:
+                    closest_index = index
+                    previous_abs_diff = total_abs_diff
             index += 1
+
+        if len(index_list) == 0:
+            muni_indices[each] = [closest_index]
+        else:
+            muni_indices[each] = index_list
 
     return muni_indices
 
@@ -382,9 +389,18 @@ def fill_with_data(muni_indices, grouped_array):
     for each_file in FILENAME_ARRAY:
         data_contents = get_muni_data(each_file, 'input_data')
         for each_muni in muni_indices.keys():
-            data_entry.insert_data(each_muni, data_contents[muni_indices[each_muni]][4])
+            data_entry.insert_data(each_muni, calc_avg_from_indices(muni_indices[each_muni], data_contents))
     for each_muni in muni_indices.keys():
         grouped_array.insert_data(each_muni, data_entry.get_data(each_muni))
+
+
+def calc_avg_from_indices(indices_list, grib_csv_contents, column=4):
+
+    sum = 0
+    for each_index in indices_list:
+        sum += float(grib_csv_contents[each_index][column])
+
+    return sum / len(indices_list)
 
 
 def CRB_test_function():
