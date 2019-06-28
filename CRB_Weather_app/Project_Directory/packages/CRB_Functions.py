@@ -1,15 +1,16 @@
-import requests
+
 import os
-from tqdm import tqdm
-import json
 import csv
-import utm
 import math
-import subprocess
 import yagmail
 import time
 from CRB_Classes import GroupedArray
 from datetime import date
+from subprocess import call
+from utm import to_latlon
+from tqdm import tqdm
+from json import load
+from requests import get
 
 THREE_HOUR_SWITCH = 36
 LATEST_HOUR = 84
@@ -32,6 +33,7 @@ MINIMUM_FILE_SIZE = 5000  # bytes
 KPH_CONVERSION_FACTOR = 3.6
 SECONDS_IN_HOUR = 3600
 MILLISECONDS_IN_SECONDS = 1000
+M_IN_KM = 1000
 
 ERROR_NAM_MESSAGE_1 = """
 Hello,
@@ -52,18 +54,24 @@ THIS EMAIL IS UNMONITORED. DO NOT REPLY TO THIS EMAIL.
 NAM_FILE = 'nam.tHOUR_HHz.awphysXX.tm00.grib2'
 
 
+# Gets absolute distance between (lat1, lon1) and (lat2, lon2) based on the Haversine formula.
 def calc_d_haversine(lat1, lon1, lat2, lon2):
 
-    a = math.sin(math.radians((lat2-lat1)/2))**2 + math.cos(math.radians(lat1)) *\
-        math.cos(math.radians(lat2))*math.sin(math.radians((lon2-lon1)/2))**2
+    a = math.sin(math.radians((lat2 - lat1) / 2)) ** 2 + math.cos(math.radians(lat1)) * \
+        math.cos(math.radians(lat2)) * math.sin(math.radians((lon2 - lon1) / 2)) ** 2
 
-    c = 2*math.atan2(math.sqrt(a), math.sqrt(1-a))
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
 
-    return EARTH_RADIUS*c
+    return EARTH_RADIUS * c
 
 
+def calc_circle_radius(area):
+    return math.sqrt(area / math.pi)
+
+
+# Not used in normal operation, used for myself to see how close each muni centroid was to it's closest data point.
 def get_delta_distance(file_name='1_HPBL_reserved.csv'):
-    muni_dict, muni_array =init_muni_dict()
+    muni_dict, muni_array = init_muni_dict()
     muni_indices = {}
     results = []
     data_list = get_muni_data(file_name)
@@ -90,12 +98,13 @@ def get_delta_distance(file_name='1_HPBL_reserved.csv'):
         print each
 
 
+# Again, not used in normal operation. Extracts the unique municipalities and writes them into a formatted csv.
+# Only needed to run this once.
 def get_municipalities():
-
     file_name = 'municipalities.json'
     muni_set = []
     with open(file_name) as json_file:
-        contents = json.load(json_file)
+        contents = load(json_file)
         for each in contents:
             if each['muni_name'] not in muni_set:
                 muni_set.append(each['muni_name'])
@@ -107,6 +116,8 @@ def get_municipalities():
             writer.writerow([each, '', ''])
 
 
+# Not part of normal operation.
+# Needed to run this once in order to generate CSV with municipalities and their corresponding coordinates.
 def create_lat_long_csv():
     input_muni = 'input_muni.csv'
     centroid_table = 'RM_Centroid_Table.csv'
@@ -123,43 +134,47 @@ def create_lat_long_csv():
         for each in reader:
             x_utm = int(each[-2])
             y_utm = int(each[-1])
-            lat_lon = utm.to_latlon(x_utm, y_utm, 14, 'U')
+            shape_area = float(each[-4])
+            lat_lon = to_latlon(x_utm, y_utm, 14, 'U')
             if each[2] in muni_array:
-                muni_dict[each[2]] = '%f|%f' % (lat_lon[0], lat_lon[1])
+                muni_dict[each[2]] = '%f|%f|%f' % (lat_lon[0], lat_lon[1], shape_area)
 
-    with open(get_path_dir('input_data', output_muni), 'wb') as output_csv:
+    with open(r'%s' % get_path_dir('input_data', output_muni), 'wb') as output_csv:
         writer = csv.writer(output_csv, delimiter=',')
-        writer.writerow(['Municipality', 'Latitude', 'Longitude'])
+        writer.writerow(['Municipality', 'Latitude', 'Longitude', 'Shape Area'])
         for each in muni_array:
             value_array = muni_dict[each].split('|')
             lat = value_array[0]
             lon = value_array[1]
-            writer.writerow([each, lat, lon])
+            shape_area = value_array[2]
+            writer.writerow([each, lat, lon, shape_area])
 
 
+# Downloads a grib file 1024 bytes at a time if given the url for NOAA and corresponding file name.
+# Places grib file in the 'input_data' folder by default.
 def download_grib_request(url, file_name, default_folder='input_data'):
-
-    with requests.get(url, stream=True) as r:
+    with get(url, stream=True) as r:
         chunkSize = 1024
         with open(get_path_dir(default_folder, file_name), 'wb') as raw_file:
             for chunk in r.iter_content(chunk_size=chunkSize):
                 raw_file.write(chunk)
 
 
+# Returns a the path to a specific directory or file.
+# Only works for directories and files located within the working directory.
 def get_path_dir(directory, file_name='', create=True, is_home_dir=False):
-    # Gets the path of the working directory (i.e. AgAuto's working directory).
     file_base_dir = os.getcwd()
-    # Add directory to the working directory path.
+
+    # is_home_dir = True means that the file we're looking for is located in the working directory.
+    # and not in a folder within the working directory.
     if not is_home_dir:
         file_base_dir = os.path.join(file_base_dir, directory)
-    # Add file_name to the new path created above.
     if file_name != '':
         file_path = os.path.join(file_base_dir, file_name)
     else:
         file_path = file_base_dir
 
-    # If the directory doesn't exist then raise an Exception.
-    if not os.path.exists(file_base_dir):
+    if not os.path.exists(file_base_dir) and not is_home_dir:
         raise Exception('Directory %s does not exist within working directory.' % directory)
     # Raise an exception only if the user specifies create = False. Otherwise, assume they will create after.
     if not create:
@@ -169,10 +184,10 @@ def get_path_dir(directory, file_name='', create=True, is_home_dir=False):
     return file_path
 
 
+# Generates a bat file that works when run from any computer as long as it contains the CRB code from github.
 def generate_bat_file(file_name='1_download_data_dev.bat'):
-
     bat_skeleton = r"""
-    
+
 cd FILE_PATH
 
 copy grib_test.grib2 C:\ndfd\degrib\bin
@@ -192,9 +207,9 @@ copy 3_VGRD_pbl.csv FILE_PATH
 copy 4_VRATE.csv FILE_PATH
 copy 5_UGRD.csv FILE_PATH
 copy 6_VGRD.csv FILE_PATH
-    
-                    """
 
+                    """
+    # Replaces all instances of FILE_PATH with the path to the 'input_data' folder.
     bat_skeleton = bat_skeleton.replace('FILE_PATH', get_path_dir('input_data'))
 
     with open(file_name, 'wb') as bat_file:
@@ -203,8 +218,8 @@ copy 6_VGRD.csv FILE_PATH
     return file_name
 
 
+# Updates all csv data in 'input_data' to data based on file_name and date.
 def grib_grab(file_name, date, in_prod_server=True):
-
     url_test = "https://nomads.ncep.noaa.gov/cgi-bin/filter_nam.pl?file=FILENAME&var_HPBL=on&var_" \
                "HPBL=on&var_UGRD=on&var_VGRD=on&var_VRATE=on&subregion=&leftlon=-101.7&rightlon=-95.1&toplat=" \
                "52.9&bottomlat=48.9&dir=%2Fnam.YYYYMMDD"
@@ -219,11 +234,14 @@ def grib_grab(file_name, date, in_prod_server=True):
     if os.path.getsize(get_path_dir('input_data', 'grib_test.grib2')) < MINIMUM_FILE_SIZE:
         success = False
     else:
-        subprocess.call(r'%s' % dev_bat_path)
+        # Updates all csv data in 'input_data' by running the bat_file.
+        call(r'%s' % dev_bat_path)
 
     return success
 
 
+# Returns an dictionary containing each municipality with their corresponding lat and lon coordinates.
+# Also returns an array of the municipalities in alphabetical order.
 def init_muni_dict():
     muni_dict = {}
     muni_file_name = 'muni_lat_lon.csv'
@@ -233,14 +251,16 @@ def init_muni_dict():
         reader = csv.reader(muni_csv, delimiter=',')
         for each in reader:
             if each[0] != 'Municipality':
-                muni_dict[each[0]] = [float(each[1]), float(each[2])]
+                muni_dict[each[0]] = [float(each[1]), float(each[2]), float(each[3])]
                 muni_array.append(each[0])
 
     return muni_dict, muni_array
 
 
+# Reads a file (e.g. 4_VRATE.csv) and extracts all the data for every municipality and returns it as a 2-D list.
 def get_muni_data(filename, default_folder='input_data'):
     data_list = []
+
     with open(get_path_dir(default_folder, filename)) as test_csv:
         reader = csv.reader(test_csv, delimiter=',')
         for each in reader:
@@ -250,6 +270,8 @@ def get_muni_data(filename, default_folder='input_data'):
     return data_list
 
 
+# Gets index locations of the data from each municipality.
+# Needs these indices to know where to look in the CSV files.
 def initialize_data_indices(file_name='1_HPBL_reserved.csv'):
     muni_dict, muni_array = init_muni_dict()
     muni_indices = {}
@@ -257,14 +279,20 @@ def initialize_data_indices(file_name='1_HPBL_reserved.csv'):
     for each in muni_array:
         muni_lat = muni_dict[each][0]
         muni_lon = muni_dict[each][1]
+        shape_area = muni_dict[each][2]
         total_abs_diff = EARTH_RADIUS
         previous_diff = total_abs_diff
         index = 0
+        number_of_valid_points = 0
         for each_data in data_list:
             lat = float(each_data[-3])
             lon = float(each_data[-2])
+
+            # Calculate the distance between lat/lon from data and lat/lon of municipality's centroid.
             total_abs_diff = calc_d_haversine(muni_lat, muni_lon, lat, lon)
-            if total_abs_diff < previous_diff:
+
+            # Always point to lat/lon that's closest to the municipality's centroid.
+            if total_abs_diff <= calc_circle_radius(shape_area) / M_IN_KM:
                 muni_indices[each] = index
                 previous_diff = total_abs_diff
             index += 1
@@ -302,14 +330,15 @@ def write_json_data(muni_data_bank, hour_hh, output_filename='wx.json'):
         data_size = len(muni_data)
         for each_index in range(data_size):
             each_muni_data = muni_data[each_index]
-            ugrd_s = float(each_muni_data[UGRD_SURFACE_INDEX])*KPH_CONVERSION_FACTOR
-            vgrd_s = float(each_muni_data[VGRD_SURFACE_INDEX])*KPH_CONVERSION_FACTOR
-            ugrd_pbl = float(each_muni_data[UGRD_PBL_INDEX])*KPH_CONVERSION_FACTOR
-            vgrd_pbl = float(each_muni_data[VGRD_PBL_INDEX])*KPH_CONVERSION_FACTOR
+            ugrd_s = float(each_muni_data[UGRD_SURFACE_INDEX]) * KPH_CONVERSION_FACTOR
+            vgrd_s = float(each_muni_data[VGRD_SURFACE_INDEX]) * KPH_CONVERSION_FACTOR
+            ugrd_pbl = float(each_muni_data[UGRD_PBL_INDEX]) * KPH_CONVERSION_FACTOR
+            vgrd_pbl = float(each_muni_data[VGRD_PBL_INDEX]) * KPH_CONVERSION_FACTOR
             HPBL_pbl = float(each_muni_data[HPBL_INDEX])
             vrate = int(float(each_muni_data[VRATE_INDEX]))
             hour_offset = hours_iterables[each_index]
-            json_output_str += create_json_muni_obj(each_muni, hour_offset, ugrd_s, vgrd_s, ugrd_pbl, vgrd_pbl, HPBL_pbl,
+            json_output_str += create_json_muni_obj(each_muni, hour_offset, ugrd_s, vgrd_s, ugrd_pbl, vgrd_pbl,
+                                                    HPBL_pbl,
                                                     vrate)
             if each_muni != list_of_muni[-1] or each_index != data_size - 1:
                 json_output_str += ','
@@ -330,7 +359,7 @@ def create_json_muni_obj(muni_name, hour_offset, ugrd_s, vgrd_s, ugrd_pbl, vgrd_
     ws_pbl = "\"ws_pbl\":%i" % int(calc_ws(ugrd_pbl, vgrd_pbl))
     wd_pbl = "\"wd_pbl\":%i" % int(calc_wd(ugrd_pbl, vgrd_pbl))
     HPBL = "\"hgt_pbl\":%i" % int(HPBL_pbl)
-    vrate_s = "\"vrate\":%i" % int(vrate)
+    vrate_s = "\"vrate\":%i" % int(calc_ws(ugrd_pbl, vgrd_pbl) / KPH_CONVERSION_FACTOR * HPBL_pbl)
 
     return "{%s,%s,%s,%s,%s,%s,%s,%s}" % (name_str, valid_date, ws_surface, wd_surface, ws_pbl, wd_pbl, HPBL, vrate_s)
 
@@ -385,6 +414,7 @@ def calc_ws(windspeed_u, windspeed_v):
 
 def calc_wd(windspeed_u, windspeed_v):
     base_angle = math.degrees(math.atan2(windspeed_v, windspeed_u))
+    wd = 0
     if 0 <= base_angle <= 180:
         wd = 270 - base_angle
     elif -180 <= base_angle <= -90:
@@ -415,3 +445,8 @@ def raise_exception(error_message, condition, send_email=True):
         raise Exception(error_message)
     else:
         pass
+
+
+if __name__ == "__main__":
+    create_lat_long_csv()
+    print get_path_dir('input_data', 'input_muni.csv', is_home_dir=True)

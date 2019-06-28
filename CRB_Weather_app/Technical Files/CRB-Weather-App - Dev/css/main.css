@@ -1,0 +1,224 @@
+        html, body { 
+          padding: 2px; 
+          width: 100%;
+          min-width:890px; 
+          height: 98%; 
+          margin: 0px; 
+          font-family: 'Trebuchet MS';
+        }
+        #map1, #map2, #map3, #map4 { 
+	  width: 50%; 
+	  height: 50%; 
+          box-sizing:border-box;
+          -moz-box-sizing:border-box;
+          -webkit-box-sizing:border-box;
+          border: 1px solid white;
+          float: left;
+ 	}
+        #map_container {
+          width: 70%;
+          height: 100%;
+          float: left;
+          -webkit-box-shadow: 3px 3px 5px 0px rgba(136,136,136,0.75);
+          -moz-box-shadow: 3px 3px 5px 0px rgba(136,136,136,0.75);
+          box-shadow: 3px 3px 5px 0px rgba(136,136,136,0.75);
+        }
+        #sideinfo { 
+          float:left;
+          margin-left:1px;
+          width:29%;
+          min-width:250px;
+          height:100%;
+          border-radius: 1px;
+          background: #e5e5e5;
+          text-align: center;
+          -webkit-box-shadow: 3px 3px 5px 0px rgba(136,136,136,0.75);
+          -moz-box-shadow: 3px 3px 5px 0px rgba(136,136,136,0.75);
+          box-shadow: 3px 3px 5px 0px rgba(136,136,136,0.75);
+          position:relative;
+        }
+        #rmVariables,#dt {
+          border-radius: 10px;
+          padding: 5px; 
+          width: 95%;
+          background: #f8f8f8;
+          margin-left: auto;
+          margin-right: auto;
+          margin-top: 5px;
+        }
+        #rmVariables {
+          height: 50px;
+          font-size: x-large;
+          line-height:50px;
+        }
+        #dt {
+          height: 30px;
+          font-size: large;
+          line-height:30px;
+        }
+        #notes {
+          border-radius: 0px;
+          padding: 5px;
+          /*background: #f8f8f8;*/
+          height: 30px;
+          font-size: 10px;
+          text-align:right;
+          position: absolute;
+          bottom: 5px;
+          right:7px;
+        }
+        
+        #infocontainer {
+          border-radius: 10px;
+          padding: 1px;
+          width: 95%;
+          height: 250px;
+          background: #e5e5e5;
+          margin-left: auto;
+          margin-right: auto;
+          margin-top: 0px;
+        }
+        .infobox-left {
+          border-radius: 10px;
+          border: 0px solid #cccccc;
+          width: 49.6%;
+          height: 110px;
+          background: #f8f8f8;
+          margin-top: 5px;
+          font-size: x-large;
+          float: left;
+          box-sizing:border-box;
+          -moz-box-sizing:border-box;
+          -webkit-box-sizing:border-box;
+        }
+        .infobox-right {
+          border-radius: 10px;
+          border: 0px solid #cccccc;
+          width: 49.6%;
+          height: 110px;
+          background: #f8f8f8;
+          margin-top: 5px;
+          font-size: x-large;
+          float: right;
+          box-sizing:border-box;
+          -moz-box-sizing:border-box;
+          -webkit-box-sizing:border-box;
+        }
+        .infobox_title {
+          border-radius: 10px;
+          width: 95%;
+          height: 35px;
+          line-height:35px;
+          background: #999;
+          font-size: large;
+          margin-left: auto;
+          margin-right: auto;
+          margin-top: 5px;
+          color: #fff;
+        }
+        #ws_data, #tw_data, #pbl_data, #vr_data {
+          border-radius: 10px;
+          width: 95%;
+          height: 50px;
+          line-height:50px;
+          background: #f8f8f8;
+          font-size: 18px;
+          margin-left: auto;
+          margin-right: auto;
+          margin-top: 2px;
+          color: #555;
+        }
+        #ws_color, #tw_color, #pbl_color, #vr_color {
+          border-radius: 10px;
+          width: 95%;
+          height: 9px;
+          margin-left: auto;
+          margin-right: auto;
+          margin-top: 1px;
+        }
+         
+        .legend {
+          line-height: 18px;
+          color: #555;
+          background-color: #f5f5f5;
+          padding: 5px;
+        }
+        .legend i {
+          width: 18px;
+          height: 18px;
+          float: left;
+          margin-right: 8px;
+          opacity: 0.7;
+        }    
+        #dtSelect {
+          padding:3px;
+          margin: 0;
+          background: #f8f8f8;
+          color:#333;
+          font-size:16px;
+          font-weight: bold;
+          border:none;
+          outline:none;
+          -webkit-appearance:none;
+          -moz-appearance:none;
+          appearance:none;
+          cursor:pointer;
+          text-align:center;
+        }
+        #rmSelect {
+          padding:3px;
+          margin: 0;
+          background: #f8f8f8;
+          color:#333;
+          font-size:21px;
+          font-weight: bold;
+          /*border:none;*/
+          outline:none;
+          -webkit-appearance:none;
+          -moz-appearance:none;
+          appearance:none;
+          cursor:pointer;
+          text-align:center;
+        }
+        .RotatedMarker{
+          pointer-events:none;
+        }
+        .crb_zone{
+          pointer-events:none;
+        }
+        .axis path,
+        .axis line {
+          fill: none;
+          stroke: #555;
+          shape-rendering: crispEdges;
+        }
+
+        .axis text {
+          fill: #555;
+        }
+
+        .line {
+          fill: none;
+          stroke: url(#temperature-gradient);
+          stroke-width: 2.5px;
+        }
+
+        .tick text{
+          font-size: 10px;
+        }
+
+        .tick line{
+          opacity: 0.2;
+        }
+
+
+        #graph {
+          width: 100%;
+          min-height: 200px;
+          max-height: 230px;
+          padding: 0px;
+          font-size: 10px;
+          background-color: #e8e8e8;
+          margin: 0px;
+          overflow: hidden;
+        }
