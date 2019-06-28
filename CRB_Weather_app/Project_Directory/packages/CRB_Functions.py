@@ -29,6 +29,9 @@ VGRD_PBL_INDEX = 3
 HPBL_INDEX = 4
 VRATE_INDEX = 5
 MINIMUM_FILE_SIZE = 5000  # bytes
+KPH_CONVERSION_FACTOR = 3.6
+SECONDS_IN_HOUR = 3600
+MILLISECONDS_IN_SECONDS = 1000
 
 ERROR_NAM_MESSAGE_1 = """
 Hello,
@@ -143,14 +146,17 @@ def download_grib_request(url, file_name, default_folder='input_data'):
                 raw_file.write(chunk)
 
 
-def get_path_dir(directory, file_name, create=True, is_home_dir=False):
+def get_path_dir(directory, file_name='', create=True, is_home_dir=False):
     # Gets the path of the working directory (i.e. AgAuto's working directory).
     file_base_dir = os.getcwd()
     # Add directory to the working directory path.
     if not is_home_dir:
         file_base_dir = os.path.join(file_base_dir, directory)
     # Add file_name to the new path created above.
-    file_path = os.path.join(file_base_dir, file_name)
+    if file_name != '':
+        file_path = os.path.join(file_base_dir, file_name)
+    else:
+        file_path = file_base_dir
 
     # If the directory doesn't exist then raise an Exception.
     if not os.path.exists(file_base_dir):
@@ -163,6 +169,40 @@ def get_path_dir(directory, file_name, create=True, is_home_dir=False):
     return file_path
 
 
+def generate_bat_file(file_name='1_download_data_dev.bat'):
+
+    bat_skeleton = r"""
+    
+cd FILE_PATH
+
+copy grib_test.grib2 C:\ndfd\degrib\bin
+
+cd C:\ndfd\degrib\bin
+
+degrib grib_test.grib2 -C -msg 102 -nMet -out 1_HPBL_reserved -Csv
+degrib grib_test.grib2 -C -msg 1 -nMet -out 2_UGRD_pbl -Csv
+degrib grib_test.grib2 -C -msg 2 -nMet -out 3_VGRD_pbl -Csv
+degrib grib_test.grib2 -C -msg 3 -nMet -out 4_VRATE -Csv
+degrib grib_test.grib2 -C -msg 82 -nMet -out 5_UGRD -Csv
+degrib grib_test.grib2 -C -msg 83 -nMet -out 6_VGRD -Csv
+
+copy 1_HPBL_reserved.csv FILE_PATH
+copy 2_UGRD_pbl.csv FILE_PATH
+copy 3_VGRD_pbl.csv FILE_PATH
+copy 4_VRATE.csv FILE_PATH
+copy 5_UGRD.csv FILE_PATH
+copy 6_VGRD.csv FILE_PATH
+    
+                    """
+
+    bat_skeleton = bat_skeleton.replace('FILE_PATH', get_path_dir('input_data'))
+
+    with open(file_name, 'wb') as bat_file:
+        bat_file.write(bat_skeleton)
+
+    return file_name
+
+
 def grib_grab(file_name, date, in_prod_server=True):
 
     url_test = "https://nomads.ncep.noaa.gov/cgi-bin/filter_nam.pl?file=FILENAME&var_HPBL=on&var_" \
@@ -172,15 +212,16 @@ def grib_grab(file_name, date, in_prod_server=True):
     url_test = url_test.replace('FILENAME', file_name)
     url_test = url_test.replace('YYYYMMDD', date)
     download_grib_request(url_test, 'grib_test.grib2')
-    dev_bat_path = get_path_dir("", '1_download_data_dev.bat', is_home_dir=True)
+    dev_bat_path = get_path_dir("", generate_bat_file(), is_home_dir=True)
+
+    success = True
 
     if os.path.getsize(get_path_dir('input_data', 'grib_test.grib2')) < MINIMUM_FILE_SIZE:
-        send_error_email(ERROR_NAM_MESSAGE_1 % get_path_dir('input_data', 'grib_test.grib2'))
+        success = False
     else:
-        if in_prod_server:
-            subprocess.call(r'C:\Users\Administrator\Documents\Python_Scripts\CRB_Weather_app\CRB_Weather_app\Project_Directory\1_download_data.bat')
-        else:
-            subprocess.call(r'%s' % dev_bat_path)
+        subprocess.call(r'%s' % dev_bat_path)
+
+    return success
 
 
 def init_muni_dict():
@@ -232,8 +273,8 @@ def initialize_data_indices(file_name='1_HPBL_reserved.csv'):
 
 
 def build_input_data(date, hour_hh, muni_indices):
-    data_finished(hour_hh, date)
-    iterables = get_iterable_hours()
+    data_finished(hour_hh.strip(), date.strip())
+    iterables = get_iterable_hours('00')
     file_name = NAM_FILE.replace('HOUR_HH', hour_hh)
     file_name_new = file_name.replace('XX', str(iterables[0]).zfill(2))
     progress_size = len(iterables)
@@ -241,28 +282,30 @@ def build_input_data(date, hour_hh, muni_indices):
 
     for hour_iter in tqdm(iterables, total=progress_size, desc="Parsing %s" % file_name_new):
         file_name_new = file_name.replace('XX', str(hour_iter).zfill(2))
-        grib_grab(file_name_new, date)
+        if not grib_grab(file_name_new, date, False):
+            send_error_email(ERROR_NAM_MESSAGE_1 % get_path_dir('input_data', 'grib_test.grib2'))
+            raise Exception('grib_grab shouldn\'t fail if data_finished method succeeds. Check data for %s' % hour_iter)
         fill_with_data(muni_indices, muni_data_bank)
 
-    output_str = write_json_data(muni_data_bank)
+    output_str = write_json_data(muni_data_bank, hour_hh)
 
     return output_str
 
 
-def write_json_data(muni_data_bank, output_filename='wx.json'):
+def write_json_data(muni_data_bank, hour_hh, output_filename='wx.json'):
     list_of_muni = muni_data_bank.get_identifiers()
     list_of_muni.sort()
-    hours_iterables = get_iterable_hours()
+    hours_iterables = get_iterable_hours(int(hour_hh))
     json_output_str = "wxdata = ["
     for each_muni in list_of_muni:
         muni_data = muni_data_bank.get_data(each_muni)
         data_size = len(muni_data)
         for each_index in range(data_size):
             each_muni_data = muni_data[each_index]
-            ugrd_s = float(each_muni_data[UGRD_SURFACE_INDEX])*3.6
-            vgrd_s = float(each_muni_data[VGRD_SURFACE_INDEX])*3.6
-            ugrd_pbl = float(each_muni_data[UGRD_PBL_INDEX])*3.6
-            vgrd_pbl = float(each_muni_data[VGRD_PBL_INDEX])*3.6
+            ugrd_s = float(each_muni_data[UGRD_SURFACE_INDEX])*KPH_CONVERSION_FACTOR
+            vgrd_s = float(each_muni_data[VGRD_SURFACE_INDEX])*KPH_CONVERSION_FACTOR
+            ugrd_pbl = float(each_muni_data[UGRD_PBL_INDEX])*KPH_CONVERSION_FACTOR
+            vgrd_pbl = float(each_muni_data[VGRD_PBL_INDEX])*KPH_CONVERSION_FACTOR
             HPBL_pbl = float(each_muni_data[HPBL_INDEX])
             vrate = int(float(each_muni_data[VRATE_INDEX]))
             hour_offset = hours_iterables[each_index]
@@ -292,12 +335,13 @@ def create_json_muni_obj(muni_name, hour_offset, ugrd_s, vgrd_s, ugrd_pbl, vgrd_
     return "{%s,%s,%s,%s,%s,%s,%s,%s}" % (name_str, valid_date, ws_surface, wd_surface, ws_pbl, wd_pbl, HPBL, vrate_s)
 
 
-def get_iterable_hours():
-    hour = 0
+def get_iterable_hours(hour_hh): 
+    hour_hh_int = int(hour_hh)
+    hour = hour_hh_int
     iterables = []
-    while hour <= LATEST_HOUR:
+    while hour <= LATEST_HOUR + hour_hh_int:
         iterables.append(hour)
-        if hour < THREE_HOUR_SWITCH:
+        if hour < THREE_HOUR_SWITCH + hour_hh_int:
             hour += 1
         else:
             hour += 3
@@ -315,32 +359,18 @@ def fill_with_data(muni_indices, grouped_array):
 
 
 def CRB_test_function():
-    muni_indices = initialize_data_indices()
-    date = '20190624'
-    hour_hh = '06'
-    iterables = get_iterable_hours()
-    file_name = NAM_FILE.replace('HOUR_HH', hour_hh)
-    file_name_new = file_name.replace('XX', str(iterables[0]).zfill(2))
-    progress_size = len(iterables)
-    muni_data_bank = GroupedArray(muni_indices.keys())
-
-    for hour_iter in tqdm(iterables, total=progress_size, desc="Parsing %s" % file_name_new):
-        file_name_new = file_name.replace('XX', str(hour_iter).zfill(2))
-        grib_grab(file_name_new, date, False)
-        fill_with_data(muni_indices, muni_data_bank)
-
-    output_str = write_json_data(muni_data_bank, 'output_test.txt')
-    return muni_data_bank
+    pass
 
 
-def get_wx_valid_date(date, int_hour):
-    epoch_ms = (get_epoch_time(date, offset=7) + int_hour*3600) * 1000
+def get_wx_valid_date(date_str, int_hour):
+    # Change offset for daylight savings time?
+    epoch_ms = (get_epoch_time(date_str, offset=1) + (int_hour - 6)*SECONDS_IN_HOUR) * MILLISECONDS_IN_SECONDS
     return epoch_ms  # Returns epoch in ms.
 
 
 def get_epoch_time(date_str, offset=0):
     pattern = "%Y%m%d"
-    epoch = (int(time.mktime(time.strptime(date_str, pattern))) + offset*3600)  # In seconds.
+    epoch = (int(time.mktime(time.strptime(date_str, pattern))) + offset*SECONDS_IN_HOUR)  # In seconds.
     return epoch
 
 

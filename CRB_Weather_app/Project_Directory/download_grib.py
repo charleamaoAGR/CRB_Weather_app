@@ -1,9 +1,17 @@
+"""
+Created By: Charle Amao
+
+Overview: This program updates the wx.json file with the latest data from NOAA for use of the CRB website.
+
+"""
+
 from packages import CRB_Functions as CRB
 from datetime import datetime, timedelta
 
 
 def main():
 
+    # Get
     muni_indices = CRB.initialize_data_indices()
     time = datetime.now()
     today_str = datetime.now().strftime('%Y%m%d')
