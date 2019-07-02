@@ -11,7 +11,7 @@ from datetime import datetime, timedelta
 
 def main():
 
-    muni_indices = CRB.initialize_data_indices(use_centroid=True)
+    muni_indices = CRB.initialize_data_indices(use_centroid=False)
 
     time = datetime.now()
     today_str = datetime.now().strftime('%Y%m%d')

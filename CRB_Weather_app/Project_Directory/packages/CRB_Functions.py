@@ -220,7 +220,7 @@ copy 6_VGRD.csv FILE_PATH
 
 
 # Updates all csv data in 'input_data' to data based on file_name and date.
-def grib_grab(file_name, date, in_prod_server=True):
+def grib_grab(file_name, date, muni_indices, grouped_array):
     url_test = "https://nomads.ncep.noaa.gov/cgi-bin/filter_nam.pl?file=FILENAME&var_HPBL=on&var_" \
                "HPBL=on&var_UGRD=on&var_VGRD=on&var_VRATE=on&subregion=&leftlon=-101.7&rightlon=-95.1&toplat=" \
                "52.9&bottomlat=48.9&dir=%2Fnam.YYYYMMDD"
@@ -237,6 +237,7 @@ def grib_grab(file_name, date, in_prod_server=True):
     else:
         # Updates all csv data in 'input_data' by running the bat_file.
         call(r'%s' % dev_bat_path)
+        fill_with_data(muni_indices, grouped_array)
 
     return success
 
@@ -326,10 +327,9 @@ def build_input_data(date, hour_hh, muni_indices):
     # For each hour in iterables, download the corresponding file, and fill muni_data_bank with extracted data.
     for hour_iter in tqdm(iterables, total=progress_size, desc="Parsing %s" % file_name_new):
         file_name_new = file_name.replace('XX', str(hour_iter).zfill(2))
-        if not grib_grab(file_name_new, date, False):
+        if not grib_grab(file_name_new, date, muni_indices, muni_data_bank):
             send_error_email(ERROR_NAM_MESSAGE_1 % get_path_dir('input_data', 'grib_test.grib2'))
             raise Exception('grib_grab shouldn\'t fail if data_finished method succeeds. Check data for %s' % hour_iter)
-        fill_with_data(muni_indices, muni_data_bank)
 
     output_str = write_json_data(muni_data_bank, hour_hh)
 
@@ -359,6 +359,7 @@ def write_json_data(muni_data_bank, hour_hh, output_filename='wx.json'):
             json_output_str += create_json_muni_obj(each_muni, hour_offset, ugrd_s, vgrd_s, ugrd_pbl, vgrd_pbl,
                                                     HPBL_pbl,
                                                     vrate)
+            # If we are at the end of muni_data or at the end list of municipalities then don't add a comma.
             if each_muni != list_of_muni[-1] or each_index != data_size - 1:
                 json_output_str += ','
 
@@ -370,7 +371,8 @@ def write_json_data(muni_data_bank, hour_hh, output_filename='wx.json'):
     return json_output_str
 
 
-def create_json_muni_obj(muni_name, hour_offset, ugrd_s, vgrd_s, ugrd_pbl, vgrd_pbl, HPBL_pbl, vrate):
+# Returns a formatted data "element" that can then be added to the json output string.
+def create_json_muni_obj(muni_name, hour_offset, ugrd_s, vgrd_s, ugrd_pbl, vgrd_pbl, HPBL_pbl, vrate, use_remote=True):
     name_str = "\"muni_name\":\"%s\"" % muni_name
     valid_date = "\"valid_date\":%s" % (get_wx_valid_date(date.today().strftime("%Y%m%d"), hour_offset))
     ws_surface = "\"ws\":%i" % int(calc_ws(ugrd_s, vgrd_s))
@@ -378,11 +380,18 @@ def create_json_muni_obj(muni_name, hour_offset, ugrd_s, vgrd_s, ugrd_pbl, vgrd_
     ws_pbl = "\"ws_pbl\":%i" % int(calc_ws(ugrd_pbl, vgrd_pbl))
     wd_pbl = "\"wd_pbl\":%i" % int(calc_wd(ugrd_pbl, vgrd_pbl))
     HPBL = "\"hgt_pbl\":%i" % int(HPBL_pbl)
-    vrate_s = "\"vrate\":%i" % int(calc_ws(ugrd_pbl, vgrd_pbl) / KPH_CONVERSION_FACTOR * HPBL_pbl)
+
+    # Use NOAA data if use_remote is True. Calculate the vrate if otherwise.
+    if use_remote:
+        vrate_s = "\"vrate\":%i" % vrate
+    else:
+        vrate_s = "\"vrate\":%i" % int(calc_ws(ugrd_pbl, vgrd_pbl) / KPH_CONVERSION_FACTOR * HPBL_pbl)
 
     return "{%s,%s,%s,%s,%s,%s,%s,%s}" % (name_str, valid_date, ws_surface, wd_surface, ws_pbl, wd_pbl, HPBL, vrate_s)
 
 
+# Returns a list of hours starting from hour_hh to hour_hh + 84.
+# Once hour reaches THREE_HOUR_SWITCH, then the hours come in 3-hour increments.
 def get_iterable_hours(hour_hh): 
     hour_hh_int = int(hour_hh)
     hour = hour_hh_int
@@ -396,6 +405,8 @@ def get_iterable_hours(hour_hh):
     return iterables
 
 
+# Inserts new data from the all files listed in FILENAME_ARRAY into grouped_array.
+# This function is meant to run right after grib_grab so maybe these should be combined?
 def fill_with_data(muni_indices, grouped_array):
     data_entry = GroupedArray(muni_indices, True)
     for each_file in FILENAME_ARRAY:
@@ -406,6 +417,7 @@ def fill_with_data(muni_indices, grouped_array):
         grouped_array.insert_data(each_muni, data_entry.get_data(each_muni))
 
 
+# Calculates the avg when given a 2D array of a grib2 message as a csv and the indices to locate the data to be averaged
 def calc_avg_from_indices(indices_list, grib_csv_contents, column=4):
 
     sum = 0
@@ -419,12 +431,15 @@ def CRB_test_function():
     pass
 
 
+# Returns epoch in ms when given a date and an hour of the day as an integer.
+# Decrements resulting epoch from date_str by 6 hours to convert UTC to UTC Winnipeg.
 def get_wx_valid_date(date_str, int_hour):
-    # Change offset for daylight savings time?
+    # Change offset for daylight savings time? Timi please confirm.
     epoch_ms = (get_epoch_time(date_str, offset=1) + (int_hour - 6)*SECONDS_IN_HOUR) * MILLISECONDS_IN_SECONDS
     return epoch_ms  # Returns epoch in ms.
 
 
+# Returns epoch in s when given a date.
 def get_epoch_time(date_str, offset=0):
     pattern = "%Y%m%d"
     epoch = (int(time.mktime(time.strptime(date_str, pattern))) + offset*SECONDS_IN_HOUR)  # In seconds.
@@ -436,10 +451,12 @@ def send_error_email(error_message, user="DevCharle.mbag", password="mawp209MAWP
     yag.send(to=receiver, subject="Error message from DevCharle", contents=error_message)
 
 
+# Returns the magnitude of a vector given vector components u and v.
 def calc_ws(windspeed_u, windspeed_v):
     return math.sqrt(windspeed_u**2 + windspeed_v**2)
 
 
+# Returns the angle of the resultant vector of u and v, as measured in the clockwise direction from the negative Y axis.
 def calc_wd(windspeed_u, windspeed_v):
     base_angle = math.degrees(math.atan2(windspeed_v, windspeed_u))
     wd = 0
@@ -452,6 +469,8 @@ def calc_wd(windspeed_u, windspeed_v):
     return wd
 
 
+# Downloads the latest grib file as specified by today_date and hour.
+# If the downloaded file is less than MINIMUM_FILE_SIZE then raise an exception since the data is incomplete.
 def data_finished(hour, today_date):
     url_test = "https://nomads.ncep.noaa.gov/cgi-bin/filter_nam.pl?file=FILENAME&var_HPBL=on&var_" \
                "HPBL=on&var_UGRD=on&var_VGRD=on&var_VRATE=on&subregion=&leftlon=-101.7&rightlon=-95.1&toplat=" \
