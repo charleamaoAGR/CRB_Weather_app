@@ -11,7 +11,7 @@ from datetime import datetime, timedelta
 
 def main():
 
-    muni_indices = CRB.initialize_data_indices()
+    muni_indices = CRB.initialize_data_indices(use_centroid=True)
 
     time = datetime.now()
     today_str = datetime.now().strftime('%Y%m%d')
@@ -25,7 +25,7 @@ def main():
     elif time_6 <= time < time_12:
         CRB.build_input_data(today_str, '12', muni_indices)
     elif time_12 <= time < time_18:
-        CRB.build_input_data(today_str, '12', muni_indices)
+        CRB.build_input_data(today_str, '18', muni_indices)
     elif time >= time_18:
         # If time is greater than 18:00 then we would look at the next day's 00:00 data.
         time_plus_1 = (time + timedelta(days=1)).strftime('%Y%m%d')

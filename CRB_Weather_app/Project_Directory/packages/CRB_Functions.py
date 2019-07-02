@@ -120,8 +120,8 @@ def get_municipalities():
 # Needed to run this once in order to generate CSV with municipalities and their corresponding coordinates.
 def create_lat_long_csv():
     input_muni = 'input_muni.csv'
-    centroid_table = 'RM_Centroid_Table.csv'
-    output_muni = 'muni_lat_lon.csv'
+    centroid_table = 'RMCentroid.csv'
+    output_muni = 'muni_lat_lon_v2.csv'
     muni_array = []
     muni_dict = {}
     with open(get_path_dir('input_data', input_muni)) as muni_list:
@@ -130,14 +130,15 @@ def create_lat_long_csv():
             muni_array.append(each[0])
 
     with open(get_path_dir('input_data', centroid_table)) as centroid_csv:
-        reader = csv.reader(centroid_csv, delimiter='\t')
+        reader = csv.reader(centroid_csv, delimiter=',')
         for each in reader:
             x_utm = int(each[-2])
             y_utm = int(each[-1])
             shape_area = float(each[-4])
             lat_lon = to_latlon(x_utm, y_utm, 14, 'U')
-            if each[2] in muni_array:
-                muni_dict[each[2]] = '%f|%f|%f' % (lat_lon[0], lat_lon[1], shape_area)
+            muni_name = each[-5].split(' ', 2)[-1]
+            if each[-5].split(' ', 2)[-1] in muni_array:
+                muni_dict[muni_name] = '%f|%f|%f' % (lat_lon[0], lat_lon[1], shape_area)
 
     with open(r'%s' % get_path_dir('input_data', output_muni), 'wb') as output_csv:
         writer = csv.writer(output_csv, delimiter=',')
@@ -244,7 +245,7 @@ def grib_grab(file_name, date, in_prod_server=True):
 # Also returns an array of the municipalities in alphabetical order.
 def init_muni_dict():
     muni_dict = {}
-    muni_file_name = 'muni_lat_lon.csv'
+    muni_file_name = 'muni_lat_lon_v2.csv'
     muni_array = []
 
     with open(get_path_dir('input_data', muni_file_name)) as muni_csv:
@@ -272,7 +273,7 @@ def get_muni_data(filename, default_folder='input_data'):
 
 # Gets index locations of the data from each municipality.
 # Needs these indices to know where to look in the CSV files.
-def initialize_data_indices(file_name='1_HPBL_reserved.csv'):
+def initialize_data_indices(file_name='1_HPBL_reserved.csv', use_centroid=False):
     muni_dict, muni_array = init_muni_dict()
     muni_indices = {}
     data_list = get_muni_data(file_name)
@@ -294,12 +295,12 @@ def initialize_data_indices(file_name='1_HPBL_reserved.csv'):
             # Always point to lat/lon that's closest to the municipality's centroid.
             if total_abs_diff <= calc_circle_radius(shape_area) / M_IN_KM:
                 index_list.append(index)
-                if total_abs_diff <= previous_abs_diff:
-                    closest_index = index
-                    previous_abs_diff = total_abs_diff
+            if total_abs_diff <= previous_abs_diff:
+                closest_index = index
+                previous_abs_diff = total_abs_diff
             index += 1
 
-        if len(index_list) == 0:
+        if len(index_list) == 0 or use_centroid:
             muni_indices[each] = [closest_index]
         else:
             muni_indices[each] = index_list
@@ -307,14 +308,22 @@ def initialize_data_indices(file_name='1_HPBL_reserved.csv'):
     return muni_indices
 
 
+# main function that coordinates all functions in this file to create wx.json
 def build_input_data(date, hour_hh, muni_indices):
+
+    # Check NOAA if data is complete.
     data_finished(hour_hh.strip(), date.strip())
     iterables = get_iterable_hours('00')
+
+    # Generate name of file to be downloaded based on hour_hh and values from iterables.
     file_name = NAM_FILE.replace('HOUR_HH', hour_hh)
     file_name_new = file_name.replace('XX', str(iterables[0]).zfill(2))
     progress_size = len(iterables)
+
+    # Initialize GroupedArray named muni_data_bank.
     muni_data_bank = GroupedArray(muni_indices.keys())
 
+    # For each hour in iterables, download the corresponding file, and fill muni_data_bank with extracted data.
     for hour_iter in tqdm(iterables, total=progress_size, desc="Parsing %s" % file_name_new):
         file_name_new = file_name.replace('XX', str(hour_iter).zfill(2))
         if not grib_grab(file_name_new, date, False):
@@ -327,8 +336,11 @@ def build_input_data(date, hour_hh, muni_indices):
     return output_str
 
 
+# Responsible for updating wx.json when passed muni_data_bank.
 def write_json_data(muni_data_bank, hour_hh, output_filename='wx.json'):
     list_of_muni = muni_data_bank.get_identifiers()
+
+    # We want this in alphabetical order because that's how the html files expect it.
     list_of_muni.sort()
     hours_iterables = get_iterable_hours(int(hour_hh))
     json_output_str = "wxdata = ["
@@ -465,4 +477,3 @@ def raise_exception(error_message, condition, send_email=True):
 
 if __name__ == "__main__":
     create_lat_long_csv()
-    print get_path_dir('input_data', 'input_muni.csv', is_home_dir=True)

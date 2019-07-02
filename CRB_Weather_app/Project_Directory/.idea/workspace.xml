@@ -3,6 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="de734d6e-7e1c-47a2-938e-bbc86231c76d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/download_grib.py" beforeDir="false" afterPath="$PROJECT_DIR$/download_grib.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input_data/1_HPBL_reserved.csv" beforeDir="false" afterPath="$PROJECT_DIR$/input_data/1_HPBL_reserved.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input_data/2_UGRD_pbl.csv" beforeDir="false" afterPath="$PROJECT_DIR$/input_data/2_UGRD_pbl.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input_data/3_VGRD_pbl.csv" beforeDir="false" afterPath="$PROJECT_DIR$/input_data/3_VGRD_pbl.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input_data/4_VRATE.csv" beforeDir="false" afterPath="$PROJECT_DIR$/input_data/4_VRATE.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input_data/5_UGRD.csv" beforeDir="false" afterPath="$PROJECT_DIR$/input_data/5_UGRD.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input_data/6_VGRD.csv" beforeDir="false" afterPath="$PROJECT_DIR$/input_data/6_VGRD.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/input_data/grib_test.grib2" beforeDir="false" afterPath="$PROJECT_DIR$/input_data/grib_test.grib2" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/packages/CRB_Functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/packages/CRB_Functions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/wx.json" beforeDir="false" afterPath="$PROJECT_DIR$/wx.json" afterDir="false" />
@@ -16,19 +22,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../../../AgWeather/AgAuto/AgAuto.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-102">
-              <caret line="9" column="30" selection-start-line="9" selection-start-column="30" selection-end-line="9" selection-end-column="30" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/download_grib.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="148">
-              <caret line="15" selection-start-line="15" selection-end-line="15" />
+            <state relative-caret-position="439">
+              <caret line="27" column="43" selection-start-line="27" selection-start-column="43" selection-end-line="27" selection-end-column="43" />
             </state>
           </provider>
         </entry>
@@ -36,39 +33,16 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/packages/CRB_Functions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="70">
-              <caret line="304" column="43" selection-start-line="304" selection-start-column="43" selection-end-line="304" selection-end-column="43" />
+            <state relative-caret-position="184">
+              <caret line="342" column="85" selection-start-line="342" selection-start-column="85" selection-end-line="342" selection-end-column="85" />
               <folding>
                 <element signature="e#1#10#0" expanded="true" />
                 <element signature="e#1268#1524#0" />
                 <element signature="e#1533#2497#0" />
-                <element signature="e#2530#3065#0" />
-                <element signature="e#3635#4936#0" />
                 <element signature="e#5610#6452#0" />
                 <element signature="e#6512#7226#0" />
                 <element signature="e#7736#8019#0" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../../../AgWeather/AgAuto/agweather_package/xml_parser.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="246">
-              <caret line="506" selection-start-line="506" selection-end-line="520" selection-end-column="55" />
-              <folding>
-                <element signature="e#0#20#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../Technical Files/CRB-Weather-App - Dev/mafrd_crb.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="174">
-              <caret line="51" column="91" selection-start-line="51" selection-start-column="91" selection-end-line="51" selection-end-column="91" />
             </state>
           </provider>
         </entry>
@@ -130,13 +104,14 @@
         <option value="$PROJECT_DIR$/test_main.py" />
         <option value="$PROJECT_DIR$/../Technical Files/CRB-Weather-App - Dev/mafrd_crb.html" />
         <option value="$PROJECT_DIR$/download_grib.py" />
+        <option value="$PROJECT_DIR$/../Technical Files/CRB-Weather-App - Dev/mafrd_crb - avg.html" />
         <option value="$PROJECT_DIR$/packages/CRB_Functions.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="281" />
-    <option name="y" value="273" />
+    <option name="x" value="-1808" />
+    <option name="y" value="-24" />
     <option name="width" value="1026" />
     <option name="height" value="576" />
   </component>
@@ -293,8 +268,8 @@
       <list>
         <item itemvalue="Python.download_grib" />
         <item itemvalue="Python.CRB_Functions" />
-        <item itemvalue="Python tests.pytest in test_main.py" />
         <item itemvalue="Python.AgAuto" />
+        <item itemvalue="Python tests.pytest in test_main.py" />
         <item itemvalue="Python.netCDF_practice" />
       </list>
     </recent_temporary>
@@ -351,7 +326,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="784" extended-state="6" />
+    <frame x="-1688" y="-84" width="1696" height="1066" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.26096824" />
@@ -359,8 +334,8 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.31950846" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.39784947" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.22293676" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3548387" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32872504" />
@@ -401,8 +376,8 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/packages/CRB_Functions.py</url>
-          <line>317</line>
-          <option name="timeStamp" value="8" />
+          <line>133</line>
+          <option name="timeStamp" value="12" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -410,27 +385,47 @@
   <component name="debuggerHistoryManager">
     <expressions id="evaluateExpression">
       <expression>
+        <expression-string>&quot;RM of Macdonalds&quot;.strip(&quot;RM of &quot;)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>&quot;RM of Macdonald&quot;.strip(&quot;RM of &quot;)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>each[-5].strip(&quot;RM of &quot;)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>each[-5].strip(&quot;RM of &quot;).strip()</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>muni_dict</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>muni_array</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>each</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
         <expression-string>muni_indices</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
         <expression-string>NAM_FILE</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>range(data_size)</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>muni_data</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>list_of_muni</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
@@ -463,13 +458,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../../AgWeather/AgAuto/AgAuto.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-102">
-          <caret line="9" column="30" selection-start-line="9" selection-start-column="30" selection-end-line="9" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../../AgWeather/AgAuto/agweather_package/DailyUpload.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1441">
@@ -477,12 +465,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../../AgWeather/AgAuto/agweather_package/UsefulFunctions.py">
+    <entry file="file://$PROJECT_DIR$/../Technical Files/CRB-Weather-App - Dev/mafrd_crb.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-102">
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="174">
+          <caret line="51" column="91" selection-start-line="51" selection-start-column="91" selection-end-line="51" selection-end-column="91" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../AgWeather/AgAuto/AgAuto.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="58" lean-forward="true" selection-start-line="58" selection-end-line="58" />
         </state>
       </provider>
     </entry>
@@ -496,35 +489,42 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../Technical Files/CRB-Weather-App - Dev/mafrd_crb.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="174">
-          <caret line="51" column="91" selection-start-line="51" selection-start-column="91" selection-end-line="51" selection-end-column="91" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../../AgWeather/AgAuto/agweather_package/UsefulClasses.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1064" />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../../../AgWeather/AgAuto/agweather_package/UsefulFunctions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-102">
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../Technical Files/CRB-Weather-App - Dev/mafrd_crb - avg.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="473">
+          <caret line="52" column="78" lean-forward="true" selection-start-line="52" selection-start-column="78" selection-end-line="52" selection-end-column="78" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/download_grib.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="148">
-          <caret line="15" selection-start-line="15" selection-end-line="15" />
+        <state relative-caret-position="439">
+          <caret line="27" column="43" selection-start-line="27" selection-start-column="43" selection-end-line="27" selection-end-column="43" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/packages/CRB_Functions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="70">
-          <caret line="304" column="43" selection-start-line="304" selection-start-column="43" selection-end-line="304" selection-end-column="43" />
+        <state relative-caret-position="184">
+          <caret line="342" column="85" selection-start-line="342" selection-start-column="85" selection-end-line="342" selection-end-column="85" />
           <folding>
             <element signature="e#1#10#0" expanded="true" />
             <element signature="e#1268#1524#0" />
             <element signature="e#1533#2497#0" />
-            <element signature="e#2530#3065#0" />
-            <element signature="e#3635#4936#0" />
             <element signature="e#5610#6452#0" />
             <element signature="e#6512#7226#0" />
             <element signature="e#7736#8019#0" />
