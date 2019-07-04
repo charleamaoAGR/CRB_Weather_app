@@ -48,7 +48,7 @@ of a hassle when you want upload your changes to GitHub.
 cd C:\Users\CAmao\Documents\NEW_FOLDER
 ```
 
-4. Type ```git clone https://github.com/charleamaoAGR/CRB_Weather_app.git``` and press Enter. Note: Make sure you are outside of the
+4. Type ```git clone https://github.com/charleamaoAGR/CRB_Weather_app.git``` and press Enter. Note: make sure you are outside of the
 managed environment when completing this step.
 
 #### GitHub.com method
