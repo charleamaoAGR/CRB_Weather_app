@@ -405,7 +405,7 @@ def get_iterable_hours(hour_hh):
     return iterables
 
 
-# Inserts new data from the all files listed in FILENAME_ARRAY into grouped_array.
+# Inserts new data from all files listed in FILENAME_ARRAY into grouped_array.
 # This function is meant to run right after grib_grab so maybe these should be combined?
 def fill_with_data(muni_indices, grouped_array):
     data_entry = GroupedArray(muni_indices, True)
