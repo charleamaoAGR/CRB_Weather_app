@@ -22,7 +22,7 @@ def main():
     if time < time_6:
         CRB.build_input_data(today_str, '06', muni_indices)
     elif time_6 <= time < time_12:
-        CRB.build_input_data(today_str, '12', muni_indices)
+        CRB.build_input_data(today_str, '06', muni_indices)
     elif time_12 <= time < time_18:
         CRB.build_input_data(today_str, '18', muni_indices)
     elif time >= time_18:

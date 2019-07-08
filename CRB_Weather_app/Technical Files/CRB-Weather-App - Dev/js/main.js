@@ -118,7 +118,7 @@
 
       //create datetime dropdown.
       //get first value, to have something to compare
-      dateList.push(wxdata[0].valid_date); 
+      dateList.push(wxdata[0].valid_date);
 
       for (var i = 1; i < wxdata.length; i++) {
         var obj = wxdata[i];
@@ -187,7 +187,7 @@
           document.getElementById("modeldate").innerHTML = "Model run: " + thisWDay + " " + thisMonth + " " + thisDay + ", " + thisHour;
         }
         //Do not show midnight to 6am
-        if (thisDate.hour() > 6) {
+        if (true) { //thisDate.hour() > 6
           $('<option></option>')
             .text(thisWDay + " " + thisMonth + " " + thisDay + ", " + thisHour)
             .attr('value', dateList[i])

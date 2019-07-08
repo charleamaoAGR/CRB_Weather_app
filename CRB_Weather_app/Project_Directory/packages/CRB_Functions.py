@@ -495,4 +495,7 @@ def raise_exception(error_message, condition, send_email=True):
 
 
 if __name__ == "__main__":
-    create_lat_long_csv()
+    print get_iterable_hours('00')
+    print get_iterable_hours('06')
+    print get_iterable_hours('12')
+    print get_iterable_hours('18')
