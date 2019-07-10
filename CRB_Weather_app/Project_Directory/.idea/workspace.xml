@@ -4,7 +4,6 @@
     <list default="true" id="de734d6e-7e1c-47a2-938e-bbc86231c76d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/packages/CRB_Functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/packages/CRB_Functions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wx.json" beforeDir="false" afterPath="$PROJECT_DIR$/wx.json" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -16,6 +15,7 @@
     <session id="964312679">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
+          <entry key="project.closed" value="1" />
           <entry key="project.open.time.3" value="1" />
           <entry key="project.opened" value="1" />
         </counts>
@@ -75,8 +75,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/packages/CRB_Functions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="215">
-              <caret line="337" column="33" selection-start-line="337" selection-start-column="33" selection-end-line="337" selection-end-column="33" />
+            <state relative-caret-position="232">
+              <caret line="338" column="30" lean-forward="true" selection-start-line="338" selection-start-column="30" selection-end-line="338" selection-end-column="30" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
                 <element signature="e#4538#5442#0" />
@@ -122,7 +122,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="281" />
     <option name="y" value="273" />
     <option name="width" value="1026" />
@@ -316,15 +316,14 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1296" height="1040" extended-state="7" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1296" height="1040" extended-state="6" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.26132685" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.31898454" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.31898454" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39845476" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -440,8 +439,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/packages/CRB_Functions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="215">
-          <caret line="337" column="33" selection-start-line="337" selection-start-column="33" selection-end-line="337" selection-end-column="33" />
+        <state relative-caret-position="232">
+          <caret line="338" column="30" lean-forward="true" selection-start-line="338" selection-start-column="30" selection-end-line="338" selection-end-column="30" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
             <element signature="e#4538#5442#0" />

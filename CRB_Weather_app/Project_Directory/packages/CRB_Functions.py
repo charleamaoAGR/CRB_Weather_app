@@ -335,7 +335,7 @@ def create_json_muni_obj(muni_name, hour_offset, ugrd_s, vgrd_s, ugrd_pbl, vgrd_
     return "{%s,%s,%s,%s,%s,%s,%s,%s}" % (name_str, valid_date, ws_surface, wd_surface, ws_pbl, wd_pbl, HPBL, vrate_s)
 
 
-def get_iterable_hours(hour_hh): 
+def get_iterable_hours(hour_hh):
     hour_hh_int = int(hour_hh)
     hour = hour_hh_int
     iterables = []
