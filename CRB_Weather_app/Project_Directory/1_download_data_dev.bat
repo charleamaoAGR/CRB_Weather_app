@@ -1,5 +1,5 @@
 
-    
+
 cd C:\Users\Administrator\Documents\Python_Scripts\CRB_Weather_app\CRB_Weather_app\Project_Directory\input_data
 
 copy grib_test.grib2 C:\ndfd\degrib\bin
@@ -19,5 +19,5 @@ copy 3_VGRD_pbl.csv C:\Users\Administrator\Documents\Python_Scripts\CRB_Weather_
 copy 4_VRATE.csv C:\Users\Administrator\Documents\Python_Scripts\CRB_Weather_app\CRB_Weather_app\Project_Directory\input_data
 copy 5_UGRD.csv C:\Users\Administrator\Documents\Python_Scripts\CRB_Weather_app\CRB_Weather_app\Project_Directory\input_data
 copy 6_VGRD.csv C:\Users\Administrator\Documents\Python_Scripts\CRB_Weather_app\CRB_Weather_app\Project_Directory\input_data
-    
+
                     
