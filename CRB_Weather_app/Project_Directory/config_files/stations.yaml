@@ -1,0 +1,167 @@
+PQD:
+  mbag_id: 45
+  file_name: THEPAS
+  desc: XXX
+  lat: 53.971
+  lon: -101.091
+
+WEQ:
+  mbag_id: 44
+  file_name: SWANRIVER
+  desc: XXX
+  lat: 52.115
+  lon: -101.233
+
+WXB:
+  mbag_id: 38
+  file_name: ROBLIN
+  desc: XXX
+  lat: 51.183
+  lon: -101.363
+
+WZT:
+  mbag_id: 9
+  file_name: DAUPHIN
+  desc: XXX
+  lat: 51.101
+  lon: -100.053
+
+WUT:
+  mbag_id: 40
+  file_name: SHOALLAKE
+  desc: XXX
+  lat: 50.455
+  lon: -100.604
+
+PBO:
+  mbag_id: 2
+  file_name: BRANDON
+  desc: XXX
+  lat: 49.9
+  lon: -99.95
+
+WZE:
+  mbag_id: 4
+  file_name: CARBERRY
+  desc: XXX
+  lat: 49.906
+  lon: -99.357
+
+WEI:
+  mbag_id: 26
+  file_name: MELITA
+  desc: XXX
+  lat: 49.281
+  lon: -100.986
+
+WPO:
+  mbag_id: 34
+  file_name: PILOTMOUND
+  desc: XXX
+  lat: 49.191
+  lon: -98.905
+
+WPG:
+  mbag_id: 37
+  file_name: PORTAGESOUTHPORT
+  desc: XXX
+  lat: 49.903
+  lon: -98.284
+
+WSZ:
+  mbag_id: 56
+  file_name: FISHERBRANCH
+  desc: XXX
+  lat: 51.083
+  lon: -97.555
+
+PGH:
+  mbag_id: 14
+  file_name: GIMLI
+  desc: XXX
+  lat: 50.633
+  lon: -97.05
+
+XWG:
+  mbag_id: 52
+  file_name: WINNIPEG
+  desc: XXX
+  lat: 49.917
+  lon: -97.249
+
+WNK:
+  mbag_id: 5
+  file_name: CARMAN
+  desc: XXX
+  lat: 49.498
+  lon: -98.03
+
+XDW:
+  mbag_id: 55
+  file_name: DEERWOOD
+  desc: XXX
+  lat: 49.4
+  lon: -98.319
+
+XMD:
+  mbag_id: 29
+  file_name: MORDEN
+  desc: XXX
+  lat: 49.188
+  lon: -98.084
+
+WGN:
+  mbag_id: 17
+  file_name: GRETNA
+  desc: XXX
+  lat: 49.031
+  lon: -97.56
+
+WEX:
+  mbag_id: 11
+  file_name: EMERSON
+  desc: XXX
+  lat: 49.0
+  lon: -97.238
+
+WEA:
+  mbag_id: 35
+  file_name: PINAWA
+  desc: XXX
+  lat: 50.177
+  lon: -96.065
+
+WSU:
+  mbag_id: 41
+  file_name: SPRAGUE
+  desc: XXX
+  lat: 49.024
+  lon: -95.598
+
+WOO:
+  mbag_id: 25
+  file_name: MCCREARY
+  desc: XXX
+  lat: 50.712
+  lon: -99.53
+
+WWP:
+  mbag_id: 51
+  file_name: WASAGAMING
+  desc: XXX
+  lat: 50.655
+  lon: -99.942
+
+POY:
+  mbag_id: 8
+  file_name: CYPRESSRIVER
+  desc: XXX
+  lat: 49.562
+  lon: -99.074
+
+PTG:
+  mbag_id: 22
+  file_name: KLEEFELD
+  desc: XXX
+  lat: 49.518
+  lon: -96.901

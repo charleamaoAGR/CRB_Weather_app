@@ -1,6 +1,6 @@
 class GroupedArray:
 
-    def __init__(self, identifiers, is_scalar=False):
+    def __init__(self, identifiers=[], is_scalar=False):
         self.data_dict = {}
         self.identifiers = identifiers
 
@@ -18,6 +18,7 @@ class GroupedArray:
 
     def insert_data(self, identifier, data):
 
+        self.add_identifier(identifier)
         if self.is_scalar:
             self.data_dict[identifier].append(data)
             self.size += 1
@@ -33,4 +34,3 @@ class GroupedArray:
 
     def get_identifiers(self):
         return self.identifiers
-

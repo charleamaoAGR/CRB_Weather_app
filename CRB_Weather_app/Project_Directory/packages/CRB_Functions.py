@@ -185,7 +185,7 @@ def get_path_dir(directory, file_name='', create=True, is_home_dir=False):
     return file_path
 
 
-# Generates a bat file that works when run from any computer as long as it contains the CRB code from github.
+# Generates a bat file that works when run from any computer as long as it contains the CRB repo from github.
 def generate_bat_file(file_name='1_download_data_dev.bat'):
     bat_skeleton = r"""
 
@@ -492,6 +492,20 @@ def raise_exception(error_message, condition, send_email=True):
         raise Exception(error_message)
     else:
         pass
+
+
+def cardinal_to_degrees(cardinal_dir):
+    cardinal_dict = {
+        'N': 0, 'NNE': 22.5, 'NE': 45, 'ENE': 77.5, 'E': 90, 'ESE': 112.5, 'SE': 135, 'SSE': 157.5, 'S': 180,
+        'SSW': 202.5, 'SW': 225, 'WSW': 247.5, 'W': 270, 'WNW': 292.5, 'NW': 315, 'NNW': 337.5
+    }
+
+    try:
+        output = cardinal_dict[cardinal_dir]
+    except KeyError:
+        output = ''
+
+    return output
 
 
 if __name__ == "__main__":
