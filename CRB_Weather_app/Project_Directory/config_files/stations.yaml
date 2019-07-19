@@ -1,4 +1,4 @@
-PQD:
+YQD:
   mbag_id: 45
   file_name: THEPAS
   desc: XXX
@@ -22,7 +22,7 @@ WXB:
 WZT:
   mbag_id: 9
   file_name: DAUPHIN
-  desc: XXX
+  desc: Dauphin
   lat: 51.101
   lon: -100.053
 
@@ -64,7 +64,7 @@ WPO:
 WPG:
   mbag_id: 37
   file_name: PORTAGESOUTHPORT
-  desc: XXX
+  desc: Portage La Prairie
   lat: 49.903
   lon: -98.284
 
@@ -78,14 +78,14 @@ WSZ:
 PGH:
   mbag_id: 14
   file_name: GIMLI
-  desc: XXX
+  desc: Gimli
   lat: 50.633
   lon: -97.05
 
 XWG:
   mbag_id: 52
   file_name: WINNIPEG
-  desc: XXX
+  desc: Winnipeg
   lat: 49.917
   lon: -97.249
 
@@ -120,14 +120,14 @@ WGN:
 WEX:
   mbag_id: 11
   file_name: EMERSON
-  desc: XXX
+  desc: Emerson-Franklin
   lat: 49.0
   lon: -97.238
 
 WEA:
   mbag_id: 35
   file_name: PINAWA
-  desc: XXX
+  desc: Pinawa
   lat: 50.177
   lon: -96.065
 
@@ -141,7 +141,7 @@ WSU:
 WOO:
   mbag_id: 25
   file_name: MCCREARY
-  desc: XXX
+  desc: McCreary
   lat: 50.712
   lon: -99.53
 
