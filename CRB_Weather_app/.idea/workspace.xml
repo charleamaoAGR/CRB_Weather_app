@@ -2,10 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9d4b9d26-4cb6-4669-926c-00b70406fcf4" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/CRB_Weather_app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/CRB_Weather_app.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Project_Directory/1_download_data_dev.bat" beforeDir="false" afterPath="$PROJECT_DIR$/Project_Directory/1_download_data_dev.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Project_Directory/input_data/grib_test.grib2" beforeDir="false" afterPath="$PROJECT_DIR$/Project_Directory/input_data/grib_test.grib2" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Project_Directory/packages/CRB_Functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/Project_Directory/packages/CRB_Functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Project_Directory/contrast_forecast.py" beforeDir="false" afterPath="$PROJECT_DIR$/Project_Directory/contrast_forecast.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Project_Directory/input_data/9am_mbag_data.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Project_Directory/input_data/RM_Centroid_Table.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Project_Directory/input_data/git.txt" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -13,80 +16,43 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FUSProjectUsageTrigger">
-    <session id="2290017">
-      <usages-collector id="statistics.lifecycle.project">
-        <counts>
-          <entry key="project.closed" value="1" />
-          <entry key="project.open.time.1" value="1" />
-          <entry key="project.open.time.20" value="1" />
-          <entry key="project.opened" value="2" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.extensions.edit">
-        <counts>
-          <entry key="Python Console" value="9" />
-          <entry key="py" value="1083" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.edit">
-        <counts>
-          <entry key="Python" value="1092" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.extensions.open">
-        <counts>
-          <entry key="json" value="1" />
-          <entry key="py" value="2" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.open">
-        <counts>
-          <entry key="JSON" value="1" />
-          <entry key="Python" value="2" />
-        </counts>
-      </usages-collector>
-    </session>
+  <component name="DockManager">
+    <window id="1">
+      <content type="file-editors">
+        <state>
+          <leaf>
+            <file pinned="false" current-in-tab="true">
+              <entry file="file://$PROJECT_DIR$/Project_Directory/municipalities.json">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state>
+                    <caret column="52" selection-start-column="39" selection-end-column="52" />
+                  </state>
+                </provider>
+              </entry>
+            </file>
+          </leaf>
+        </state>
+      </content>
+    </window>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Technical Files/CRB-Weather-App/mafrd_crb.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="867">
-              <caret line="51" column="99" selection-start-line="51" selection-start-column="99" selection-end-line="51" selection-end-column="99" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Project_Directory/download_grib.py">
+        <entry file="file://$PROJECT_DIR$/Project_Directory/packages/xml_parser.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="19" column="43" selection-start-line="19" selection-start-column="43" selection-end-line="19" selection-end-column="43" />
+            <state relative-caret-position="-3927">
               <folding>
-                <element signature="e#0#41#0" expanded="true" />
+                <element signature="e#0#20#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Project_Directory/packages/CRB_Functions.py">
+        <entry file="file://$PROJECT_DIR$/Project_Directory/config_files/stations.yaml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-180">
-              <caret line="185" column="34" lean-forward="true" selection-start-line="185" selection-start-column="34" selection-end-line="185" selection-end-column="34" />
-              <folding>
-                <element signature="e#0#15#0" expanded="true" />
-                <element signature="e#1132#1367#0" />
-                <element signature="e#1431#2394#0" />
-                <element signature="e#2428#2963#0" />
-                <element signature="e#2997#4131#0" />
-                <element signature="e#4211#4456#0" />
-                <element signature="e#10929#11328#0" />
-                <element signature="e#11360#12055#0" />
-                <marker date="1561655149697" expanded="true" signature="5504:6363" ph="..." />
-              </folding>
+            <state relative-caret-position="510">
+              <caret line="30" column="22" selection-start-line="30" selection-start-column="18" selection-end-line="30" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -96,6 +62,8 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>grib_grab</find>
+      <find>lake</find>
+      <find>stat</find>
     </findStrings>
     <replaceStrings>
       <replace>NAM_FILE</replace>
@@ -112,6 +80,7 @@
         <option value="$PROJECT_DIR$/Project Directory/packages/CRB_Functions.py" />
         <option value="$PROJECT_DIR$/Project_Directory/packages/CRB_Functions.py" />
         <option value="$PROJECT_DIR$/Project_Directory/download_grib.py" />
+        <option value="$PROJECT_DIR$/Project_Directory/contrast_forecast.py" />
       </list>
     </option>
   </component>
@@ -127,7 +96,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -144,17 +112,24 @@
               <item name="CRB_Weather_app" type="b2602c69:ProjectViewProjectNode" />
               <item name="CRB_Weather_app" type="462c0819:PsiDirectoryNode" />
               <item name="Project_Directory" type="462c0819:PsiDirectoryNode" />
+              <item name="config_files" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="CRB_Weather_app" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CRB_Weather_app" type="462c0819:PsiDirectoryNode" />
+              <item name="Project_Directory" type="462c0819:PsiDirectoryNode" />
               <item name="packages" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../AgWeather/AgAuto" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunDashboard">
@@ -169,7 +144,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.download_grib (1)">
+  <component name="RunManager" selected="Python.contrast_forecast">
     <configuration name="AgAuto" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="CRB_Weather_app" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -183,6 +158,27 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../../AgWeather/AgAuto/AgAuto.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="contrast_forecast" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="CRB_Weather_app" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Project_Directory" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Project_Directory/contrast_forecast.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -233,13 +229,32 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="pytest in contrast_forecast.py" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+      <module name="CRB_Weather_app" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Project_Directory" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/Project_Directory/contrast_forecast.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Python.AgAuto" />
       <item itemvalue="Python.download_grib" />
       <item itemvalue="Python.download_grib (1)" />
+      <item itemvalue="Python tests.pytest in contrast_forecast.py" />
+      <item itemvalue="Python.contrast_forecast" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.contrast_forecast" />
+        <item itemvalue="Python tests.pytest in contrast_forecast.py" />
         <item itemvalue="Python.download_grib (1)" />
         <item itemvalue="Python.download_grib" />
         <item itemvalue="Python.AgAuto" />
@@ -259,17 +274,24 @@
     </task>
     <servers />
   </component>
+  <component name="TestHistory">
+    <history-entry file="pytest_in_contrast_forecast_py - 2019.07.22 at 08h 45m 36s.xml">
+      <configuration name="pytest in contrast_forecast.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_in_contrast_forecast_py - 2019.07.22 at 08h 47m 45s.xml">
+      <configuration name="pytest in contrast_forecast.py" configurationId="tests" />
+    </history-entry>
+  </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1296" height="1040" extended-state="6" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1382" height="784" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.26537216" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18910742" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32781458" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3579109" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.48387095" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -284,8 +306,35 @@
       <window_info anchor="right" id="R Packages" order="4" />
     </layout>
   </component>
-  <component name="VcsContentAnnotationSettings">
-    <option name="myLimit" value="2678400000" />
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Project_Directory/contrast_forecast.py</url>
+          <line>73</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Project_Directory/contrast_forecast.py</url>
+          <line>121</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="debuggerHistoryManager">
+    <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>results_dict</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>results</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/Project Directory/test_main.py" />
@@ -293,37 +342,56 @@
     <entry file="file://$PROJECT_DIR$/Project Directory/wx.json" />
     <entry file="file://$PROJECT_DIR$/Project Directory/download_grib.py" />
     <entry file="file://$PROJECT_DIR$/Project Directory/packages/CRB_Functions.py" />
+    <entry file="file://$PROJECT_DIR$/Project_Directory/download_grib.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="19" column="43" selection-start-line="19" selection-start-column="43" selection-end-line="19" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Technical Files/CRB-Weather-App/mafrd_crb.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="867">
+        <state relative-caret-position="569">
           <caret line="51" column="99" selection-start-line="51" selection-start-column="99" selection-end-line="51" selection-end-column="99" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Project_Directory/municipalities.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="52" selection-start-column="39" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Project_Directory/config_files/stations.yaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="30" column="22" selection-start-line="30" selection-start-column="18" selection-end-line="30" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Project_Directory/contrast_forecast.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-765">
+          <caret line="27" column="70" selection-start-line="27" selection-start-column="70" selection-end-line="27" selection-end-column="70" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Project_Directory/packages/CRB_Functions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-180">
-          <caret line="185" column="34" lean-forward="true" selection-start-line="185" selection-start-column="34" selection-end-line="185" selection-end-column="34" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-            <element signature="e#1132#1367#0" />
-            <element signature="e#1431#2394#0" />
-            <element signature="e#2428#2963#0" />
-            <element signature="e#2997#4131#0" />
-            <element signature="e#4211#4456#0" />
-            <element signature="e#10929#11328#0" />
-            <element signature="e#11360#12055#0" />
-            <marker date="1561655149697" expanded="true" signature="5504:6363" ph="..." />
-          </folding>
+        <state relative-caret-position="-2941">
+          <caret line="63" lean-forward="true" selection-start-line="63" selection-end-line="63" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Project_Directory/download_grib.py">
+    <entry file="file://$PROJECT_DIR$/Project_Directory/packages/xml_parser.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="19" column="43" selection-start-line="19" selection-start-column="43" selection-end-line="19" selection-end-column="43" />
+        <state relative-caret-position="-3927">
           <folding>
-            <element signature="e#0#41#0" expanded="true" />
+            <element signature="e#0#20#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -4,9 +4,9 @@ import csv
 import math
 import yagmail
 import time
-from CRB_Classes import GroupedArray
+from .CRB_Classes import GroupedArray
 from datetime import date
-from subprocess import call
+import subprocess
 from utm import to_latlon
 from tqdm import tqdm
 from json import load
@@ -95,7 +95,7 @@ def get_delta_distance(file_name='1_HPBL_reserved.csv'):
         results.append(data_entry)
 
     for each in results:
-        print each
+        print(each)
 
 
 # Again, not used in normal operation. Extracts the unique municipalities and writes them into a formatted csv.
@@ -213,7 +213,7 @@ copy 6_VGRD.csv FILE_PATH
     # Replaces all instances of FILE_PATH with the path to the 'input_data' folder.
     bat_skeleton = bat_skeleton.replace('FILE_PATH', get_path_dir('input_data'))
 
-    with open(file_name, 'wb') as bat_file:
+    with open(file_name, 'w') as bat_file:
         bat_file.write(bat_skeleton)
 
     return file_name
@@ -236,7 +236,7 @@ def grib_grab(file_name, date, muni_indices, grouped_array):
         success = False
     else:
         # Updates all csv data in 'input_data' by running the bat_file.
-        call(r'%s' % dev_bat_path)
+        subprocess.call(r'%s' % dev_bat_path, stdout=subprocess.DEVNULL)
         fill_with_data(muni_indices, grouped_array)
 
     return success
@@ -338,10 +338,9 @@ def build_input_data(date, hour_hh, muni_indices):
 
 # Responsible for updating wx.json when passed muni_data_bank.
 def write_json_data(muni_data_bank, hour_hh, output_filename='wx.json'):
-    list_of_muni = muni_data_bank.get_identifiers()
-
     # We want this in alphabetical order because that's how the html files expect it.
-    list_of_muni.sort()
+    list_of_muni = sorted(muni_data_bank.get_identifiers())
+
     hours_iterables = get_iterable_hours(int(hour_hh))
     json_output_str = "wxdata = ["
     for each_muni in list_of_muni:
@@ -509,7 +508,7 @@ def cardinal_to_degrees(cardinal_dir):
 
 
 if __name__ == "__main__":
-    print get_iterable_hours('00')
-    print get_iterable_hours('06')
-    print get_iterable_hours('12')
-    print get_iterable_hours('18')
+    print(get_iterable_hours('00'))
+    print(get_iterable_hours('06'))
+    print(get_iterable_hours('12'))
+    print(get_iterable_hours('18'))
