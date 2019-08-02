@@ -4,6 +4,7 @@ import csv
 import math
 import yagmail
 import time
+import concurrent.futures
 from .CRB_Classes import GroupedArray
 from datetime import date
 import subprocess
@@ -154,11 +155,14 @@ def create_lat_long_csv():
 # Downloads a grib file 1024 bytes at a time if given the url for NOAA and corresponding file name.
 # Places grib file in the 'input_data' folder by default.
 def download_grib_request(url, file_name, default_folder='input_data'):
+    done = False
     with get(url, stream=True) as r:
         chunkSize = 1024
         with open(get_path_dir(default_folder, file_name), 'wb') as raw_file:
             for chunk in r.iter_content(chunk_size=chunkSize):
                 raw_file.write(chunk)
+            done = True
+    return done
 
 
 # Returns a the path to a specific directory or file.
@@ -307,6 +311,67 @@ def initialize_data_indices(file_name='1_HPBL_reserved.csv', use_centroid=False)
             muni_indices[each] = index_list
 
     return muni_indices
+
+
+def create_grib_url_list(date, hour_hh):
+    urls = []
+    iterable_hours = get_iterable_hours('00')
+    url_test = "https://nomads.ncep.noaa.gov/cgi-bin/filter_nam.pl?file=FILENAME&var_HPBL=on&var_" \
+               "HPBL=on&var_UGRD=on&var_VGRD=on&var_VRATE=on&subregion=&leftlon=-101.7&rightlon=-95.1&toplat=" \
+               "52.9&bottomlat=48.9&dir=%2Fnam.YYYYMMDD"
+    url_test = url_test.replace('YYYYMMDD', date)
+    file_name = NAM_FILE.replace('HOUR_HH', hour_hh)
+
+    for each_hour in iterable_hours:
+        file_name_new = file_name.replace('XX', str(each_hour).zfill(2))
+        urls.append(url_test.replace('FILENAME', file_name_new))
+
+    return urls
+
+
+def download_and_return(url, file_name):
+    result = "Failed to download"
+    if download_grib_request(url, file_name):
+        result = file_name
+    else:
+        raise Exception("Download failed")
+    return result
+
+
+def download_all_grib(url_list):
+    pool = concurrent.futures.ThreadPoolExecutor(max_workers=5)
+    iterable_hours = get_iterable_hours('00')
+    file_name_base = 'nam_grib_data_XX.grib2'
+    futures = []
+    file_names = []
+    for each_index in range(len(url_list)):
+        file_name = file_name_base.replace('XX', str(iterable_hours[each_index]))
+        futures.append(pool.submit(download_and_return, url_list[each_index], file_name))
+
+    for each_finished in concurrent.futures.as_completed(futures):
+        file_names.append(each_finished.result())
+    return file_names.sort()
+
+
+def build_input_data_test(date, hour_hh, muni_indices):
+
+    # Check NOAA if data is complete.
+    data_finished(hour_hh.strip(), date.strip())
+    url_list = create_grib_url_list(date, hour_hh)
+
+    # Initialize GroupedArray named muni_data_bank.
+    muni_data_bank = GroupedArray(muni_indices.keys())
+
+    # For each hour in iterables, download the corresponding file, and fill muni_data_bank with extracted data.
+    for each_url in tqdm(url_list, total=len(url_list), desc="Parsing grib files"):
+        file_name_new = "XX".replace('XX', str("00").zfill(2))
+        if not grib_grab(file_name_new, date, muni_indices, muni_data_bank):
+            send_error_email(ERROR_NAM_MESSAGE_1 % get_path_dir('input_data', 'grib_test.grib2'))
+            raise Exception('grib_grab shouldn\'t fail if data_finished method succeeds. Check data for %s' % "00")
+
+    output_str = write_json_data(muni_data_bank, hour_hh)
+
+    return output_str
 
 
 # main function that coordinates all functions in this file to create wx.json

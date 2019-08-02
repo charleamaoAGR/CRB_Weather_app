@@ -32,4 +32,11 @@ def main():
         CRB.build_input_data(time_plus_1, '00', muni_indices)
 
 
-main()
+def debug():
+    url_list = CRB.create_grib_url_list(datetime.now().strftime('%Y%m%d'), '06')
+    file_names = CRB.download_all_grib(url_list)
+    pass
+
+
+# main()
+debug()
