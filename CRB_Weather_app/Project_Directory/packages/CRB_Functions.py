@@ -342,6 +342,8 @@ def initialize_data_indices(file_name='1_HPBL_reserved.csv', use_centroid=False)
     return muni_indices
 
 
+# Returns a list of nomads URLs to download grib files from.
+# date is in the format YYYYMMDD, hour_hh is expected to be '00', '06', '12', and '18'.
 def create_grib_url_list(date, hour_hh):
     urls = []
     iterable_hours = get_iterable_hours('00')
@@ -358,6 +360,8 @@ def create_grib_url_list(date, hour_hh):
     return urls
 
 
+# Downloads the url response and saves it as file_name.
+# Returns the file_name if successful.
 def download_and_return(url, file_name):
     result = "Failed to download"
     if download_grib_request(url, file_name):
@@ -367,14 +371,17 @@ def download_and_return(url, file_name):
     return result
 
 
+# Responsible for downloading all url responses from url_list.
+# Returns a list of the filenames of the downloaded files.
 def download_all_grib(url_list):
+    # Initiating a thread pool with maximum of 5 threads.
     pool = concurrent.futures.ThreadPoolExecutor(max_workers=5)
-    iterable_hours = get_iterable_hours('00')
     file_name_base = 'nam_grib_data_XX.grib2'
     futures = []
     file_names = []
     for each_index in range(len(url_list)):
         file_name = file_name_base.replace('XX', str(each_index))
+        # submit a request for the function download_and_return.
         futures.append(pool.submit(download_and_return, url_list[each_index], file_name))
 
     for each_finished in concurrent.futures.as_completed(futures):
@@ -396,7 +403,7 @@ def build_input_data(date, hour_hh, muni_indices):
     # Initialize GroupedArray named muni_data_bank.
     muni_data_bank = GroupedArray(muni_indices.keys())
 
-    # For each hour in iterables, download the corresponding file, and fill muni_data_bank with extracted data.
+    # For each downloaded file, fill muni_data_bank with extracted data.
     for each_file in tqdm(file_names, total=len(file_names), desc="Parsing grib files"):
         if not parse_grib(each_file, muni_indices, muni_data_bank):
             send_error_email(ERROR_NAM_MESSAGE_1 % get_path_dir('input_data', 'grib_test.grib2'))
