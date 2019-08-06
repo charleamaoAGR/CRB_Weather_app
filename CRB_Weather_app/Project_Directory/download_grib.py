@@ -33,8 +33,9 @@ def main():
 
 
 def debug():
-    url_list = CRB.create_grib_url_list(datetime.now().strftime('%Y%m%d'), '06')
-    file_names = CRB.download_all_grib(url_list)
+    muni_indices = CRB.initialize_data_indices(use_centroid=False)
+    today_str = datetime.now().strftime('%Y%m%d')
+    CRB.build_input_data(today_str, '06', muni_indices)
     pass
 
 
