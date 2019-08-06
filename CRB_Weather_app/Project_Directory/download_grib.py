@@ -39,5 +39,5 @@ def debug():
     pass
 
 
-# main()
-debug()
+main()
+# debug()
