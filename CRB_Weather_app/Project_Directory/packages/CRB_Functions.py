@@ -4,9 +4,11 @@ import csv
 import math
 import yagmail
 import time
-from CRB_Classes import GroupedArray
+import concurrent.futures
+import re
+from .CRB_Classes import GroupedArray
 from datetime import date
-from subprocess import call
+import subprocess
 from utm import to_latlon
 from tqdm import tqdm
 from json import load
@@ -54,6 +56,12 @@ THIS EMAIL IS UNMONITORED. DO NOT REPLY TO THIS EMAIL.
 NAM_FILE = 'nam.tHOUR_HHz.awphysXX.tm00.grib2'
 
 
+def natural_sort(l):
+    convert = lambda text: int(text) if text.isdigit() else text.lower()
+    alphanum_key = lambda key: [convert(c) for c in re.split('([0-9]+)', key)]
+    return sorted(l, key=alphanum_key)
+
+
 # Gets absolute distance between (lat1, lon1) and (lat2, lon2) based on the Haversine formula.
 def calc_d_haversine(lat1, lon1, lat2, lon2):
 
@@ -95,7 +103,7 @@ def get_delta_distance(file_name='1_HPBL_reserved.csv'):
         results.append(data_entry)
 
     for each in results:
-        print each
+        print(each)
 
 
 # Again, not used in normal operation. Extracts the unique municipalities and writes them into a formatted csv.
@@ -154,11 +162,14 @@ def create_lat_long_csv():
 # Downloads a grib file 1024 bytes at a time if given the url for NOAA and corresponding file name.
 # Places grib file in the 'input_data' folder by default.
 def download_grib_request(url, file_name, default_folder='input_data'):
+    done = False
     with get(url, stream=True) as r:
         chunkSize = 1024
         with open(get_path_dir(default_folder, file_name), 'wb') as raw_file:
             for chunk in r.iter_content(chunk_size=chunkSize):
                 raw_file.write(chunk)
+            done = True
+    return done
 
 
 # Returns a the path to a specific directory or file.
@@ -185,22 +196,26 @@ def get_path_dir(directory, file_name='', create=True, is_home_dir=False):
     return file_path
 
 
-# Generates a bat file that works when run from any computer as long as it contains the CRB code from github.
-def generate_bat_file(file_name='1_download_data_dev.bat'):
+# Generates a bat file that works when run from any computer as long as it contains the CRB repo from github.
+def generate_bat_file(grib_file_name, bat_file_name='1_download_data_dev.bat'):
     bat_skeleton = r"""
 
 cd FILE_PATH
 
-copy grib_test.grib2 C:\ndfd\degrib\bin
+copy GRIB_FILE C:\ndfd\degrib\bin
+
+del GRIB_FILE
 
 cd C:\ndfd\degrib\bin
 
-degrib grib_test.grib2 -C -msg 102 -nMet -out 1_HPBL_reserved -Csv
-degrib grib_test.grib2 -C -msg 1 -nMet -out 2_UGRD_pbl -Csv
-degrib grib_test.grib2 -C -msg 2 -nMet -out 3_VGRD_pbl -Csv
-degrib grib_test.grib2 -C -msg 3 -nMet -out 4_VRATE -Csv
-degrib grib_test.grib2 -C -msg 82 -nMet -out 5_UGRD -Csv
-degrib grib_test.grib2 -C -msg 83 -nMet -out 6_VGRD -Csv
+degrib GRIB_FILE -C -msg 102 -nMet -out 1_HPBL_reserved -Csv
+degrib GRIB_FILE -C -msg 1 -nMet -out 2_UGRD_pbl -Csv
+degrib GRIB_FILE -C -msg 2 -nMet -out 3_VGRD_pbl -Csv
+degrib GRIB_FILE -C -msg 3 -nMet -out 4_VRATE -Csv
+degrib GRIB_FILE -C -msg 82 -nMet -out 5_UGRD -Csv
+degrib GRIB_FILE -C -msg 83 -nMet -out 6_VGRD -Csv
+
+del GRIB_FILE
 
 copy 1_HPBL_reserved.csv FILE_PATH
 copy 2_UGRD_pbl.csv FILE_PATH
@@ -209,14 +224,32 @@ copy 4_VRATE.csv FILE_PATH
 copy 5_UGRD.csv FILE_PATH
 copy 6_VGRD.csv FILE_PATH
 
+
                     """
     # Replaces all instances of FILE_PATH with the path to the 'input_data' folder.
+    bat_skeleton = bat_skeleton.replace('GRIB_FILE', grib_file_name)
     bat_skeleton = bat_skeleton.replace('FILE_PATH', get_path_dir('input_data'))
 
-    with open(file_name, 'wb') as bat_file:
+    with open(bat_file_name, 'w') as bat_file:
         bat_file.write(bat_skeleton)
 
-    return file_name
+    return bat_file_name
+
+
+# Updates all csv data in 'input_data' to data based on file_name and date.
+def parse_grib(file_name, muni_indices, grouped_array):
+    dev_bat_path = get_path_dir("", generate_bat_file(file_name), is_home_dir=True)
+
+    success = True
+
+    if os.path.getsize(get_path_dir('input_data', file_name)) < MINIMUM_FILE_SIZE:
+        success = False
+    else:
+        # Updates all csv data in 'input_data' by running the bat_file.
+        subprocess.call(r'%s' % dev_bat_path, stdout=subprocess.DEVNULL)
+        fill_with_data(muni_indices, grouped_array)
+
+    return success
 
 
 # Updates all csv data in 'input_data' to data based on file_name and date.
@@ -236,7 +269,7 @@ def grib_grab(file_name, date, muni_indices, grouped_array):
         success = False
     else:
         # Updates all csv data in 'input_data' by running the bat_file.
-        call(r'%s' % dev_bat_path)
+        subprocess.call(r'%s' % dev_bat_path, stdout=subprocess.DEVNULL)
         fill_with_data(muni_indices, grouped_array)
 
     return success
@@ -309,27 +342,65 @@ def initialize_data_indices(file_name='1_HPBL_reserved.csv', use_centroid=False)
     return muni_indices
 
 
+def create_grib_url_list(date, hour_hh):
+    urls = []
+    iterable_hours = get_iterable_hours('00')
+    url_test = "https://nomads.ncep.noaa.gov/cgi-bin/filter_nam.pl?file=FILENAME&var_HPBL=on&var_" \
+               "HPBL=on&var_UGRD=on&var_VGRD=on&var_VRATE=on&subregion=&leftlon=-101.7&rightlon=-95.1&toplat=" \
+               "52.9&bottomlat=48.9&dir=%2Fnam.YYYYMMDD"
+    url_test = url_test.replace('YYYYMMDD', date)
+    file_name = NAM_FILE.replace('HOUR_HH', hour_hh)
+
+    for each_hour in iterable_hours:
+        file_name_new = file_name.replace('XX', str(each_hour).zfill(2))
+        urls.append(url_test.replace('FILENAME', file_name_new))
+
+    return urls
+
+
+def download_and_return(url, file_name):
+    result = "Failed to download"
+    if download_grib_request(url, file_name):
+        result = file_name
+    else:
+        raise Exception("Download failed")
+    return result
+
+
+def download_all_grib(url_list):
+    pool = concurrent.futures.ThreadPoolExecutor(max_workers=5)
+    iterable_hours = get_iterable_hours('00')
+    file_name_base = 'nam_grib_data_XX.grib2'
+    futures = []
+    file_names = []
+    for each_index in range(len(url_list)):
+        file_name = file_name_base.replace('XX', str(each_index))
+        futures.append(pool.submit(download_and_return, url_list[each_index], file_name))
+
+    for each_finished in concurrent.futures.as_completed(futures):
+        file_names.append(each_finished.result())
+
+    file_names = natural_sort(file_names)
+
+    return file_names
+
+
 # main function that coordinates all functions in this file to create wx.json
 def build_input_data(date, hour_hh, muni_indices):
 
     # Check NOAA if data is complete.
     data_finished(hour_hh.strip(), date.strip())
-    iterables = get_iterable_hours('00')
-
-    # Generate name of file to be downloaded based on hour_hh and values from iterables.
-    file_name = NAM_FILE.replace('HOUR_HH', hour_hh)
-    file_name_new = file_name.replace('XX', str(iterables[0]).zfill(2))
-    progress_size = len(iterables)
+    url_list = create_grib_url_list(date, hour_hh)
+    file_names = download_all_grib(url_list)
 
     # Initialize GroupedArray named muni_data_bank.
     muni_data_bank = GroupedArray(muni_indices.keys())
 
     # For each hour in iterables, download the corresponding file, and fill muni_data_bank with extracted data.
-    for hour_iter in tqdm(iterables, total=progress_size, desc="Parsing %s" % file_name_new):
-        file_name_new = file_name.replace('XX', str(hour_iter).zfill(2))
-        if not grib_grab(file_name_new, date, muni_indices, muni_data_bank):
+    for each_file in tqdm(file_names, total=len(file_names), desc="Parsing grib files"):
+        if not parse_grib(each_file, muni_indices, muni_data_bank):
             send_error_email(ERROR_NAM_MESSAGE_1 % get_path_dir('input_data', 'grib_test.grib2'))
-            raise Exception('grib_grab shouldn\'t fail if data_finished method succeeds. Check data for %s' % hour_iter)
+            raise Exception('grib_grab shouldn\'t fail if data_finished method succeeds. Check data for %s' % "00")
 
     output_str = write_json_data(muni_data_bank, hour_hh)
 
@@ -338,10 +409,9 @@ def build_input_data(date, hour_hh, muni_indices):
 
 # Responsible for updating wx.json when passed muni_data_bank.
 def write_json_data(muni_data_bank, hour_hh, output_filename='wx.json'):
-    list_of_muni = muni_data_bank.get_identifiers()
-
     # We want this in alphabetical order because that's how the html files expect it.
-    list_of_muni.sort()
+    list_of_muni = sorted(muni_data_bank.get_identifiers())
+
     hours_iterables = get_iterable_hours(int(hour_hh))
     json_output_str = "wxdata = ["
     for each_muni in list_of_muni:
@@ -494,8 +564,22 @@ def raise_exception(error_message, condition, send_email=True):
         pass
 
 
+def cardinal_to_degrees(cardinal_dir):
+    cardinal_dict = {
+        'N': 0, 'NNE': 22.5, 'NE': 45, 'ENE': 77.5, 'E': 90, 'ESE': 112.5, 'SE': 135, 'SSE': 157.5, 'S': 180,
+        'SSW': 202.5, 'SW': 225, 'WSW': 247.5, 'W': 270, 'WNW': 292.5, 'NW': 315, 'NNW': 337.5
+    }
+
+    try:
+        output = cardinal_dict[cardinal_dir]
+    except KeyError:
+        output = ''
+
+    return output
+
+
 if __name__ == "__main__":
-    print get_iterable_hours('00')
-    print get_iterable_hours('06')
-    print get_iterable_hours('12')
-    print get_iterable_hours('18')
+    print(get_iterable_hours('00'))
+    print(get_iterable_hours('06'))
+    print(get_iterable_hours('12'))
+    print(get_iterable_hours('18'))

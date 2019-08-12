@@ -8,6 +8,7 @@ Overview: This program updates the wx.json file with the latest data from NOAA f
 from packages import CRB_Functions as CRB
 from datetime import datetime, timedelta
 
+
 def main():
 
     muni_indices = CRB.initialize_data_indices(use_centroid=False)
@@ -31,4 +32,12 @@ def main():
         CRB.build_input_data(time_plus_1, '00', muni_indices)
 
 
+def debug():
+    muni_indices = CRB.initialize_data_indices(use_centroid=False)
+    today_str = datetime.now().strftime('%Y%m%d')
+    CRB.build_input_data(today_str, '06', muni_indices)
+    pass
+
+
 main()
+# debug()
