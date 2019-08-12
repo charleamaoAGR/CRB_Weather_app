@@ -1,6 +1,6 @@
 
 
-cd C:\Users\CAmao\Documents\CRB_Weather_app\CRB_Weather_app\Project_Directory\input_data
+cd C:\Users\Administrator\Documents\code_repos\CRB_Weather_app\CRB_Weather_app\Project_Directory\input_data
 
 copy nam_grib_data_52.grib2 C:\ndfd\degrib\bin
 
@@ -17,12 +17,12 @@ degrib nam_grib_data_52.grib2 -C -msg 83 -nMet -out 6_VGRD -Csv
 
 del nam_grib_data_52.grib2
 
-copy 1_HPBL_reserved.csv C:\Users\CAmao\Documents\CRB_Weather_app\CRB_Weather_app\Project_Directory\input_data
-copy 2_UGRD_pbl.csv C:\Users\CAmao\Documents\CRB_Weather_app\CRB_Weather_app\Project_Directory\input_data
-copy 3_VGRD_pbl.csv C:\Users\CAmao\Documents\CRB_Weather_app\CRB_Weather_app\Project_Directory\input_data
-copy 4_VRATE.csv C:\Users\CAmao\Documents\CRB_Weather_app\CRB_Weather_app\Project_Directory\input_data
-copy 5_UGRD.csv C:\Users\CAmao\Documents\CRB_Weather_app\CRB_Weather_app\Project_Directory\input_data
-copy 6_VGRD.csv C:\Users\CAmao\Documents\CRB_Weather_app\CRB_Weather_app\Project_Directory\input_data
+copy 1_HPBL_reserved.csv C:\Users\Administrator\Documents\code_repos\CRB_Weather_app\CRB_Weather_app\Project_Directory\input_data
+copy 2_UGRD_pbl.csv C:\Users\Administrator\Documents\code_repos\CRB_Weather_app\CRB_Weather_app\Project_Directory\input_data
+copy 3_VGRD_pbl.csv C:\Users\Administrator\Documents\code_repos\CRB_Weather_app\CRB_Weather_app\Project_Directory\input_data
+copy 4_VRATE.csv C:\Users\Administrator\Documents\code_repos\CRB_Weather_app\CRB_Weather_app\Project_Directory\input_data
+copy 5_UGRD.csv C:\Users\Administrator\Documents\code_repos\CRB_Weather_app\CRB_Weather_app\Project_Directory\input_data
+copy 6_VGRD.csv C:\Users\Administrator\Documents\code_repos\CRB_Weather_app\CRB_Weather_app\Project_Directory\input_data
 
 
                     

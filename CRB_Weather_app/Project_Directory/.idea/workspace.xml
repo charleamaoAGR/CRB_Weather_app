@@ -2,101 +2,26 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="de734d6e-7e1c-47a2-938e-bbc86231c76d" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/Project Directory.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Project Directory.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/1_download_data_dev.bat" beforeDir="false" afterPath="$PROJECT_DIR$/1_download_data_dev.bat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/download_grib.py" beforeDir="false" afterPath="$PROJECT_DIR$/download_grib.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/CRB_Functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/packages/CRB_Functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input_data/1_HPBL_reserved.csv" beforeDir="false" afterPath="$PROJECT_DIR$/input_data/1_HPBL_reserved.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input_data/2_UGRD_pbl.csv" beforeDir="false" afterPath="$PROJECT_DIR$/input_data/2_UGRD_pbl.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input_data/3_VGRD_pbl.csv" beforeDir="false" afterPath="$PROJECT_DIR$/input_data/3_VGRD_pbl.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input_data/4_VRATE.csv" beforeDir="false" afterPath="$PROJECT_DIR$/input_data/4_VRATE.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input_data/5_UGRD.csv" beforeDir="false" afterPath="$PROJECT_DIR$/input_data/5_UGRD.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input_data/6_VGRD.csv" beforeDir="false" afterPath="$PROJECT_DIR$/input_data/6_VGRD.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input_data/grib_test.grib2" beforeDir="false" afterPath="$PROJECT_DIR$/input_data/grib_test.grib2" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/update_json.bat" beforeDir="false" afterPath="$PROJECT_DIR$/update_json.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wx.json" beforeDir="false" afterPath="$PROJECT_DIR$/wx.json" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/download_grib.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="10" selection-start-line="10" selection-end-line="10" />
-              <folding>
-                <element signature="e#142#183#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../Technical Files/CRB-Weather-App - Dev/js/main.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="189" column="41" lean-forward="true" selection-start-line="189" selection-start-column="41" selection-end-line="189" selection-end-column="41" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../Technical Files/CRB-Weather-App - Dev/mafrd_crb.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="15" lean-forward="true" selection-start-column="15" selection-end-column="15" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../../../AgWeather/AgAuto/agweather_package/UsefulFunctions.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2142">
-              <caret line="15" column="49" selection-start-line="15" selection-start-column="49" selection-end-line="15" selection-end-column="49" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/packages/CRB_Functions.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-526">
-              <caret line="196" lean-forward="true" selection-start-line="196" selection-end-line="196" />
-              <folding>
-                <element signature="e#1#10#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/packages/CRB_Classes.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="10" column="34" lean-forward="true" selection-start-line="10" selection-start-column="34" selection-end-line="10" selection-end-column="34" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/../../../AgWeather/AgAuto/AgAuto.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="39" column="49" selection-start-line="39" selection-start-column="49" selection-end-line="39" selection-end-column="49" />
-              <folding>
-                <element signature="e#244#296#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../../../AgWeather/AgAuto/agweather_package/UsefulClasses.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-4181" />
-          </provider>
-        </entry>
-      </file>
-    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -130,53 +55,8 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/netCDF_practice.py" />
-        <option value="$PROJECT_DIR$/../Technical Files/CRB-Weather-App/mafrd_crb.html" />
-        <option value="$PROJECT_DIR$/test_main.py" />
-        <option value="$PROJECT_DIR$/../Technical Files/CRB-Weather-App - Dev/mafrd_crb.html" />
-        <option value="$PROJECT_DIR$/../Technical Files/CRB-Weather-App - Dev/mafrd_crb - avg.html" />
-        <option value="$PROJECT_DIR$/../../../AgWeather/AgAuto/agweather_package/DailyUpload.py" />
-        <option value="$PROJECT_DIR$/../../../AgWeather/AgAuto/AgAuto.py" />
-        <option value="$PROJECT_DIR$/../Technical Files/CRB-Weather-App - Dev/js/main.js" />
-        <option value="$PROJECT_DIR$/download_grib.py" />
-        <option value="$PROJECT_DIR$/packages/CRB_Functions.py" />
-      </list>
-    </option>
-  </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-1603" />
-    <option name="y" value="-35" />
-    <option name="width" value="1026" />
-    <option name="height" value="576" />
-  </component>
+  <component name="ProjectId" id="1PKkgITZC8bRMus50ipHfm85qNZ" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="Project_Directory" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Project_Directory" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Project_Directory" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Project_Directory" type="462c0819:PsiDirectoryNode" />
-              <item name="packages" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="Scope" />
-    </panes>
-  </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
@@ -194,7 +74,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.AgAuto">
+  <component name="RunManager" selected="Python.gen_ec_text_files">
     <configuration name="AgAuto" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Project Directory" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -258,7 +138,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="netCDF_practice" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="gen_ec_text_files" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Project Directory" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -266,11 +146,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../../../AgWeather/AgAuto" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/netCDF_practice.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../../../AgWeather/AgAuto/gen_ec_text_files.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -297,17 +177,17 @@
     <list>
       <item itemvalue="Python.AgAuto" />
       <item itemvalue="Python.download_grib" />
-      <item itemvalue="Python.netCDF_practice" />
-      <item itemvalue="Python tests.pytest in test_main.py" />
       <item itemvalue="Python.CRB_Functions" />
+      <item itemvalue="Python tests.pytest in test_main.py" />
+      <item itemvalue="Python.gen_ec_text_files" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.AgAuto" />
+        <item itemvalue="Python.gen_ec_text_files" />
         <item itemvalue="Python.download_grib" />
+        <item itemvalue="Python.AgAuto" />
         <item itemvalue="Python.CRB_Functions" />
         <item itemvalue="Python tests.pytest in test_main.py" />
-        <item itemvalue="Python.netCDF_practice" />
       </list>
     </recent_temporary>
   </component>
@@ -362,50 +242,16 @@
       <is-autoscroll-to-source value="true" />
     </todo-panel>
   </component>
-  <component name="ToolWindowManager">
-    <frame x="-1688" y="-84" width="1696" height="1066" extended-state="6" />
-    <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.26096824" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.4533762" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.3548387" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.32872504" />
-      <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32872504" />
-      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info anchor="bottom" id="Python Console" order="10" weight="0.32872504" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="R Graphics" order="3" />
-      <window_info anchor="right" id="R Packages" order="4" />
-    </layout>
-    <layout-to-restore>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.26096824" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.4533762" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.3548387" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.32872504" />
-      <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32872504" />
-      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info anchor="bottom" id="Python Console" order="10" weight="0.32872504" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="R Graphics" order="3" />
-      <window_info anchor="right" id="R Packages" order="4" />
-    </layout-to-restore>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -466,158 +312,5 @@
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
     </expressions>
-  </component>
-  <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/netCDF_practice.py" />
-    <entry file="file://$PROJECT_DIR$/output_test.json" />
-    <entry file="file://$PROJECT_DIR$/output_test.txt" />
-    <entry file="file://$PROJECT_DIR$/../Technical Files/CRB-Weather-App/mafrd_crb.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="122">
-          <caret line="51" column="108" selection-start-line="51" selection-start-column="17" selection-end-line="51" selection-end-column="108" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test_main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="23" selection-start-line="23" selection-end-line="23" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../AgWeather/AgAuto/agweather_package/xml_parser.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="246">
-          <caret line="506" selection-start-line="506" selection-end-line="520" selection-end-column="55" />
-          <folding>
-            <element signature="e#0#20#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../AgWeather/AgAuto/agweather_package/DailyUpload.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1754">
-          <caret line="397" column="58" selection-start-line="397" selection-start-column="58" selection-end-line="397" selection-end-column="58" />
-          <folding>
-            <element signature="e#235#284#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../Technical Files/CRB-Weather-App - Dev/js/moment-timezone.min.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="77" lean-forward="true" selection-start-line="5" selection-start-column="77" selection-end-line="5" selection-end-column="77" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../Technical Files/CRB-Weather-App - Dev/mafrd_crb - avg.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="258">
-          <caret line="52" column="78" lean-forward="true" selection-start-line="52" selection-start-column="78" selection-end-line="52" selection-end-column="78" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wx.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="61" lean-forward="true" selection-start-column="48" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../Technical Files/CRB-Weather-App - Dev/js/L.Map.Sync.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../Technical Files/CRB-Weather-App - Dev/js/moment.min.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../Technical Files/CRB-Weather-App - Dev/js/jquery-2.1.1.min.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../Technical Files/CRB-Weather-App - Dev/js/d3.min.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../Technical Files/CRB-Weather-App - Dev/js/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="189" column="41" lean-forward="true" selection-start-line="189" selection-start-column="41" selection-end-line="189" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/packages/CRB_Classes.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="34" lean-forward="true" selection-start-line="10" selection-start-column="34" selection-end-line="10" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../AgWeather/AgAuto/agweather_package/UsefulClasses.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4181" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../AgWeather/AgAuto/agweather_package/UsefulFunctions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2142">
-          <caret line="15" column="49" selection-start-line="15" selection-start-column="49" selection-end-line="15" selection-end-column="49" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../Technical Files/CRB-Weather-App - Dev/mafrd_crb.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="15" lean-forward="true" selection-start-column="15" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/download_grib.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" selection-start-line="10" selection-end-line="10" />
-          <folding>
-            <element signature="e#142#183#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/packages/CRB_Functions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-526">
-          <caret line="196" lean-forward="true" selection-start-line="196" selection-end-line="196" />
-          <folding>
-            <element signature="e#1#10#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../AgWeather/AgAuto/AgAuto.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="39" column="49" selection-start-line="39" selection-start-column="49" selection-end-line="39" selection-end-column="49" />
-          <folding>
-            <element signature="e#244#296#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
   </component>
 </project>
