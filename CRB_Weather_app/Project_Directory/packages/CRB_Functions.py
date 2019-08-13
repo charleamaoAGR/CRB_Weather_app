@@ -7,6 +7,7 @@ import time
 import concurrent.futures
 import re
 from .CRB_Classes import GroupedArray
+from .CRB_Classes import BatchFile
 from datetime import date
 import subprocess
 from utm import to_latlon
@@ -418,6 +419,8 @@ def build_input_data(date, hour_hh, muni_indices):
 def write_json_data(muni_data_bank, hour_hh, output_filename='wx.json'):
     # We want this in alphabetical order because that's how the html files expect it.
     list_of_muni = sorted(muni_data_bank.get_identifiers())
+    batch_file = BatchFile(os.getcwd())
+    dated_filename = create_dated_filename(output_filename)
 
     hours_iterables = get_iterable_hours(int(hour_hh))
     json_output_str = "wxdata = ["
@@ -441,9 +444,13 @@ def write_json_data(muni_data_bank, hour_hh, output_filename='wx.json'):
                 json_output_str += ','
 
     json_output_str += "];"
-    output_file = open(output_filename, 'w+')
-    output_file.write(json_output_str)
-    output_file.close()
+    save_and_backup(output_filename, dated_filename, json_output_str)
+    batch_file.insert_command('copy wx.json C:\\wamp\\www\\Partners\\WindForecast')
+    batch_file.insert_command('del wx.json')
+    batch_file.insert_command('copy ' + dated_filename + ' C:\\wamp\\www\\Partners\\WindForecast\\archives')
+    batch_file.insert_command('del ' + dated_filename)
+    batch_file.export('copy_and_save.bat')
+    batch_file.run()
 
     return json_output_str
 
@@ -544,6 +551,20 @@ def calc_wd(windspeed_u, windspeed_v):
     elif -90 < base_angle < 0:
         wd = 270 - base_angle
     return wd
+
+
+def create_dated_filename(file_name, date_var=None):
+    dated_file_name = file_name + "-" + date.today().strftime('%Y%m%d')
+    if date_var is not None:
+        assert(type(date_var) is str)
+        dated_file_name = file_name + "-" + date_var
+    return dated_file_name
+
+
+def save_and_backup(file_names, contents):
+    for each_file in file_names:
+        with open(each_file, 'w+') as file_to_write:
+            file_to_write.write(contents)
 
 
 # Downloads the latest grib file as specified by today_date and hour.

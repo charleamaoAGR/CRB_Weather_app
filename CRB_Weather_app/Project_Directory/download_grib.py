@@ -10,7 +10,6 @@ from datetime import datetime, timedelta
 
 
 def main():
-
     muni_indices = CRB.initialize_data_indices(use_centroid=False)
 
     time = datetime.now()
