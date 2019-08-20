@@ -1,3 +1,6 @@
+from subprocess import call
+
+
 class GroupedArray:
 
     def __init__(self, identifiers=[], is_scalar=False):
@@ -34,3 +37,28 @@ class GroupedArray:
 
     def get_identifiers(self):
         return self.identifiers
+
+
+class BatchFile:
+
+    def __init__(self, working_directory):
+        self.working_directory = working_directory
+        self.batch_contents = "cd %s\n" % working_directory
+        self.file_path = None
+
+    def insert_command(self, command):
+        self.batch_contents = self.batch_contents + command + '\n'
+
+    def export(self, file_name, folder_path="SELF"):
+        if folder_path == 'SELF':
+            self.file_path = self.working_directory + '\\' + file_name
+        else:
+            self.file_path = folder_path + '\\' + file_name
+        with open(self.file_path, 'w+') as output_batch:
+            output_batch.write(self.batch_contents)
+
+    def run(self):
+        if self.file_path is not None:
+            call(self.file_path)
+        else:
+            raise Exception("BatchFile object was not exported prior to run command.")

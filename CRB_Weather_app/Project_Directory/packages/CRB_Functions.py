@@ -7,6 +7,7 @@ import time
 import concurrent.futures
 import re
 from .CRB_Classes import GroupedArray
+from .CRB_Classes import BatchFile
 from datetime import date
 import subprocess
 from utm import to_latlon
@@ -342,6 +343,8 @@ def initialize_data_indices(file_name='1_HPBL_reserved.csv', use_centroid=False)
     return muni_indices
 
 
+# Returns a list of nomads URLs to download grib files from.
+# date is in the format YYYYMMDD, hour_hh is expected to be '00', '06', '12', and '18'.
 def create_grib_url_list(date, hour_hh):
     urls = []
     iterable_hours = get_iterable_hours('00')
@@ -358,6 +361,8 @@ def create_grib_url_list(date, hour_hh):
     return urls
 
 
+# Downloads the url response and saves it as file_name.
+# Returns the file_name if successful.
 def download_and_return(url, file_name):
     result = "Failed to download"
     if download_grib_request(url, file_name):
@@ -367,14 +372,17 @@ def download_and_return(url, file_name):
     return result
 
 
+# Responsible for downloading all url responses from url_list.
+# Returns a list of the filenames of the downloaded files.
 def download_all_grib(url_list):
+    # Initiating a thread pool with maximum of 5 threads.
     pool = concurrent.futures.ThreadPoolExecutor(max_workers=5)
-    iterable_hours = get_iterable_hours('00')
     file_name_base = 'nam_grib_data_XX.grib2'
     futures = []
     file_names = []
     for each_index in range(len(url_list)):
         file_name = file_name_base.replace('XX', str(each_index))
+        # submit a request for the function download_and_return.
         futures.append(pool.submit(download_and_return, url_list[each_index], file_name))
 
     for each_finished in concurrent.futures.as_completed(futures):
@@ -396,7 +404,7 @@ def build_input_data(date, hour_hh, muni_indices):
     # Initialize GroupedArray named muni_data_bank.
     muni_data_bank = GroupedArray(muni_indices.keys())
 
-    # For each hour in iterables, download the corresponding file, and fill muni_data_bank with extracted data.
+    # For each downloaded file, fill muni_data_bank with extracted data.
     for each_file in tqdm(file_names, total=len(file_names), desc="Parsing grib files"):
         if not parse_grib(each_file, muni_indices, muni_data_bank):
             send_error_email(ERROR_NAM_MESSAGE_1 % get_path_dir('input_data', 'grib_test.grib2'))
@@ -411,6 +419,8 @@ def build_input_data(date, hour_hh, muni_indices):
 def write_json_data(muni_data_bank, hour_hh, output_filename='wx.json'):
     # We want this in alphabetical order because that's how the html files expect it.
     list_of_muni = sorted(muni_data_bank.get_identifiers())
+    batch_file = BatchFile(os.getcwd())
+    dated_filename = create_dated_filename(output_filename)
 
     hours_iterables = get_iterable_hours(int(hour_hh))
     json_output_str = "wxdata = ["
@@ -434,9 +444,13 @@ def write_json_data(muni_data_bank, hour_hh, output_filename='wx.json'):
                 json_output_str += ','
 
     json_output_str += "];"
-    output_file = open(output_filename, 'w+')
-    output_file.write(json_output_str)
-    output_file.close()
+    save_and_backup(output_filename, dated_filename, json_output_str)
+    batch_file.insert_command('copy wx.json C:\\wamp\\www\\Partners\\WindForecast')
+    batch_file.insert_command('del wx.json')
+    batch_file.insert_command('copy ' + dated_filename + ' C:\\wamp\\www\\Partners\\WindForecast\\archives')
+    batch_file.insert_command('del ' + dated_filename)
+    batch_file.export('copy_and_save.bat')
+    batch_file.run()
 
     return json_output_str
 
@@ -537,6 +551,20 @@ def calc_wd(windspeed_u, windspeed_v):
     elif -90 < base_angle < 0:
         wd = 270 - base_angle
     return wd
+
+
+def create_dated_filename(file_name, date_var=None):
+    dated_file_name = file_name + "-" + date.today().strftime('%Y%m%d')
+    if date_var is not None:
+        assert(type(date_var) is str)
+        dated_file_name = file_name + "-" + date_var
+    return dated_file_name
+
+
+def save_and_backup(file_names, contents):
+    for each_file in file_names:
+        with open(each_file, 'w+') as file_to_write:
+            file_to_write.write(contents)
 
 
 # Downloads the latest grib file as specified by today_date and hour.

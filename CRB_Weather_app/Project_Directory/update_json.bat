@@ -1,5 +1,3 @@
-cd C:\Users\Administrator\Documents\code_repos\CRB_Weather_app\CRB_Weather_app\Project_Directory
+cd C:\Users\Administrator\Documents\Python_Scripts\CRB_Weather_app\CRB_Weather_app\Project_Directory
 
-C:\Users\Administrator\Anaconda3\envs\py36\python download_grib.py
-
-copy wx.json C:\WWW\live.mbagweather.ca\www\models\WindForecast
+C:\Users\Administrator\Anaconda\python download_grib.py
